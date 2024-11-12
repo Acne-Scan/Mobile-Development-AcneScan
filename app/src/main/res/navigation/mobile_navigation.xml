@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.dicoding.acnescan.ui.dashboard.DashboardFragment"
+        android:name="com.dicoding.acnescan.ui.rekomendasi.RekomendasiFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
@@ -22,4 +22,16 @@
         android:name="com.dicoding.acnescan.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.dicoding.acnescan.ui.login.MainActivity"
+        android:label="MainActivity" />
+    <activity
+        android:id="@+id/bottomNavigation"
+        android:name="com.dicoding.acnescan.ui.BottomNavigation"
+        android:label="BottomNavigation" />
+    <activity
+        android:id="@+id/register"
+        android:name="com.dicoding.acnescan.ui.Register"
+        android:label="Register" />
 </navigation>

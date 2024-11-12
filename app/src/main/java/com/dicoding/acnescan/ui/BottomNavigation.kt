@@ -10,7 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.dicoding.acnescan.R
 import com.dicoding.acnescan.databinding.ActivityBottomNavBinding
 
-class bottom_nav : AppCompatActivity() {
+class BottomNavigation : AppCompatActivity() {
 
     private lateinit var binding: ActivityBottomNavBinding
 
