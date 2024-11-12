@@ -19,7 +19,7 @@
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rekomendasi"
+            android:text="@string/title_rekomendasi"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:layout_gravity="center" />

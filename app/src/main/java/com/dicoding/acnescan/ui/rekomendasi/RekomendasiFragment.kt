@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.acnescan.databinding.FragmentDashboardBinding
 
 class RekomendasiFragment : Fragment() {
@@ -28,10 +29,10 @@ class RekomendasiFragment : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+//        val textView: RecyclerView = binding.productList
+//        dashboardViewModel.text.observe(viewLifecycleOwner) {
+//            textView. = it
+//        }
         return root
     }
 

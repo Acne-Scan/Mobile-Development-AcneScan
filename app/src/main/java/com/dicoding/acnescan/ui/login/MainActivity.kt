@@ -2,6 +2,7 @@ package com.dicoding.acnescan.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.acnescan.R
@@ -15,9 +16,10 @@ class MainActivity : AppCompatActivity() {
         // Tambahkan event klik untuk tombol "Masuk Tanpa Login"
         val btnLoginWithoutAccount: Button = findViewById(R.id.btnLoginWithoutAccount)
         btnLoginWithoutAccount.setOnClickListener {
-            // Navigasi ke BottomNavActivity
+            Log.d("MainActivity", "Button clicked")
             val intent = Intent(this, BottomNavigation::class.java)
             startActivity(intent)
         }
+
     }
 }
