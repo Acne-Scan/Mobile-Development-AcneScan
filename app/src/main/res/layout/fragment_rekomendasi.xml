@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="Skincare"
+            android:text="@string/skincare"
             android:textSize="16sp"
             android:textColor="#333333"
             android:layout_gravity="center_vertical" />
@@ -60,7 +60,7 @@
         android:layout_height="48dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        android:hint="Search Product"
+        android:hint="@string/search_product"
         android:background="@drawable/search_bar_bg"
         android:paddingHorizontal="12dp"
         android:drawableStart="@drawable/baseline_search_24"

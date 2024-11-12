@@ -23,4 +23,6 @@
     <string name="title_profile">Profile</string>
     <string name="product_image">Product Image</string>
     <string name="navigate_arrow">Navigate to product details</string>
+    <string name="skincare">Skincare</string>
+    <string name="search_product">Search Product</string>
 </resources>
