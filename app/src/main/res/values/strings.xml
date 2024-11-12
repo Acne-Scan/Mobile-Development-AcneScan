@@ -21,4 +21,6 @@
     <string name="title_rekomendasi">Rekomendasi</string>
     <string name="title_kamera">Kamera</string>
     <string name="title_profile">Profile</string>
+    <string name="product_image">Product Image</string>
+    <string name="navigate_arrow">Navigate to product details</string>
 </resources>
