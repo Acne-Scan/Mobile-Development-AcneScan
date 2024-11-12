@@ -8,11 +8,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.dicoding.acnescan.databinding.FragmentDashboardBinding
+import com.dicoding.acnescan.databinding.FragmentRekomendasiBinding
 
 class RekomendasiFragment : Fragment() {
 
-    private var _binding: FragmentDashboardBinding? = null
+    private var _binding: FragmentRekomendasiBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -26,7 +26,7 @@ class RekomendasiFragment : Fragment() {
         val dashboardViewModel =
             ViewModelProvider(this).get(RekomendasiViewModel::class.java)
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentRekomendasiBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
 //        val textView: RecyclerView = binding.productList
