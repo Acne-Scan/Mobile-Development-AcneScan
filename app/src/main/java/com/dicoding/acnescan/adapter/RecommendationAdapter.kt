@@ -33,4 +33,10 @@ class RecommendationAdapter(private var items: List<RecommendationItem>) :
     }
 
     override fun getItemCount(): Int = items.size
+
+    // Fungsi untuk memperbarui data jika dibutuhkan
+    fun updateDataRecommendation(newRecommendations: List<RecommendationItem>) {
+        items = newRecommendations
+        notifyDataSetChanged()
+    }
 }

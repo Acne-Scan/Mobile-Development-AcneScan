@@ -34,8 +34,8 @@ class ArticleAdapter(private var articles: List<ArticleItem>) :
 
     override fun getItemCount(): Int = articles.size
 
-    // Tambahkan fungsi untuk memperbarui data jika dibutuhkan
-    fun updateData(newArticles: List<ArticleItem>) {
+    // Fungsi untuk memperbarui data jika dibutuhkan
+    fun updateDataArticles(newArticles: List<ArticleItem>) {
         articles = newArticles
         notifyDataSetChanged()
     }
