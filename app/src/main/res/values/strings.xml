@@ -18,11 +18,12 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="title_rekomendasi">Rekomendasi</string>
-    <string name="title_kamera">Kamera</string>
+    <string name="title_recommendation">Recommendation</string>
+    <string name="title_camera">Camera</string>
     <string name="title_profile">Profile</string>
     <string name="product_image">Product Image</string>
     <string name="navigate_arrow">Navigate to product details</string>
     <string name="skincare">Skincare</string>
     <string name="search_product">Search Product</string>
+    <string name="article_image">Article Image</string>
 </resources>

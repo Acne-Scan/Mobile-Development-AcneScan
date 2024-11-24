@@ -9,12 +9,12 @@
     <item
         android:id="@+id/navigation_rekomendasi"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_rekomendasi" />
+        android:title="@string/title_recommendation" />
 
     <item
-        android:id="@+id/navigation_kamera"
+        android:id="@+id/navigation_camera"
         android:icon="@drawable/ic_kamera"
-        android:title="@string/title_kamera" />
+        android:title="@string/title_camera" />
 
     <item
         android:id="@+id/navigation_notifications"

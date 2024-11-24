@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.dicoding.acnescan"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.dicoding.acnescan"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -58,7 +58,17 @@ dependencies {
     implementation (libs.glide)
     annotationProcessor (libs.compiler)
 
-    //retorifit
+    //kamera
+    implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.camera.lifecycle)
+
+    //kamerax
+    implementation (libs.camera.core)
+    implementation (libs.camera.camera2)
+    implementation (libs.camera.lifecycle)
+    implementation (libs.camera.view)
+
+    //retrofit
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
     implementation (libs.logging.interceptor)
