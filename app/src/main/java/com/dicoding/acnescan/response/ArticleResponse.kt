@@ -25,6 +25,9 @@ data class DataItem(
 	@field:SerializedName("updated_at")
 	val updatedAt: String? = null,
 
+	@field:SerializedName("name")
+	val name: String? = null,
+
 	@field:SerializedName("description")
 	val description: String? = null,
 

@@ -16,6 +16,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "BaseUrlIdentification", "\"http://18.141.72.15/\"")
     }
 
     buildTypes {
@@ -37,6 +39,8 @@ android {
 
     buildFeatures {
         viewBinding = true
+        mlModelBinding = true
+        buildConfig = true
     }
 }
 
@@ -73,4 +77,9 @@ dependencies {
     implementation (libs.converter.gson)
     implementation (libs.logging.interceptor)
     implementation (libs.kotlinx.coroutines.android)
+
+    //tflite
+    implementation(libs.tensorflow.lite.task.vision)
+    implementation(libs.tensorflow.lite.support)
+    implementation(libs.tensorflow.lite.metadata)
 }

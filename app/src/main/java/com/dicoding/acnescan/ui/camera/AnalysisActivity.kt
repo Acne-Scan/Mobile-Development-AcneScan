@@ -12,12 +12,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.exifinterface.media.ExifInterface
 import com.dicoding.acnescan.R
+import com.dicoding.acnescan.helper.ImageClassifierHelper
 import java.io.File
 import java.io.FileInputStream
 
 class AnalysisActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
+    private var bitmapToAnalyze: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,7 @@ class AnalysisActivity : AppCompatActivity() {
             val imageFile = File(imagePath)
             if (imageFile.exists()) {
                 val bitmap = correctImageOrientation(imageFile)
+                bitmapToAnalyze = bitmap
                 imageView.setImageBitmap(bitmap)
             } else {
                 Toast.makeText(this, "Image file not found", Toast.LENGTH_SHORT).show()
@@ -44,19 +47,22 @@ class AnalysisActivity : AppCompatActivity() {
             val uri = Uri.parse(imageUri)
             val inputStream = contentResolver.openInputStream(uri)
             val bitmap = BitmapFactory.decodeStream(inputStream)
+            bitmapToAnalyze = bitmap
             imageView.setImageBitmap(bitmap)
         } else {
             Toast.makeText(this, "No image provided", Toast.LENGTH_SHORT).show()
         }
 
+        // Tombol analisis
+        findViewById<Button>(R.id.button_analyze).setOnClickListener {
+            bitmapToAnalyze?.let {
+                analyzeImage(it)
+            } ?: Toast.makeText(this, "No image to analyze", Toast.LENGTH_SHORT).show()
+        }
+
         // Tombol kembali
         findViewById<Button>(R.id.button_back).setOnClickListener {
             finish()
-        }
-
-        // Tombol analyze
-        findViewById<Button>(R.id.button_analyze).setOnClickListener {
-            analyzeImage(imagePath ?: imageUri)
         }
     }
 
@@ -94,18 +100,38 @@ class AnalysisActivity : AppCompatActivity() {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
-    private fun analyzeImage(imagePath: String?) {
-        if (imagePath == null) {
-            Toast.makeText(this, "No image to analyze", Toast.LENGTH_SHORT).show()
-            return
+    private fun analyzeImage(bitmap: Bitmap) {
+        val classifier = ImageClassifierHelper(this)
+        try {
+            val prediction = classifier.classifyImage(bitmap)
+            val predictionType = prediction.first
+            val confidenceScore = prediction.second
+
+            // Kirim hasil analisis ke ResultActivity
+            sendAnalysisResult(bitmap, predictionType, confidenceScore)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Error during analysis: ${e.message}", Toast.LENGTH_SHORT).show()
+        } finally {
+            classifier.close()
         }
+    }
 
-        // Placeholder untuk analisis gambar
-        Toast.makeText(this, "Analyzing image...", Toast.LENGTH_SHORT).show()
+    private fun sendAnalysisResult(bitmap: Bitmap, predictionType: String, confidenceScore: Float) {
+        // Simpan gambar sementara untuk diteruskan ke ResultActivity
+        val tempFile = File(cacheDir, "analyzed_image.jpg")
+        val outputStream = tempFile.outputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        outputStream.flush()
+        outputStream.close()
 
-        // Pindah ke activity hasil analisis (ResultActivity)
-        val intent = Intent(this, ResultActivity::class.java)
-        intent.putExtra(ResultActivity.EXTRA_IMAGE_PATH, imagePath)
+        // Membuat intent untuk ResultActivity
+        val intent = Intent(this, ResultActivity::class.java).apply {
+            putExtra(ResultActivity.EXTRA_IMAGE_PATH, tempFile.absolutePath)
+            putExtra(ResultActivity.EXTRA_PREDICTION_TYPE, predictionType)
+            putExtra(ResultActivity.EXTRA_CONFIDENCE_SCORE, confidenceScore)
+        }
         startActivity(intent)
     }
 

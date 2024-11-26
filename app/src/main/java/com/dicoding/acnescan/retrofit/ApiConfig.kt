@@ -1,18 +1,33 @@
 package com.dicoding.acnescan.retrofit
 
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.dicoding.acnescan.retrofit.ApiService
 
-object ApiConfig {
-    private const val BASE_URL = "http://18.141.72.15:8080/" // Ganti sesuai base URL API Anda
+class ApiConfig {
+    companion object {
+        val baseURL = "http://18.141.72.15:8080/"
 
-    // Fungsi untuk membuat instance Retrofit
-    fun getApiService(): ApiService {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create()) // Konverter JSON ke data class
-            .build()
+        fun getApiService(): ApiService {
 
-        return retrofit.create(ApiService::class.java)
+            val authInterceptor = Interceptor { chain ->
+                val req = chain.request()
+                val requestHeaders = req.newBuilder()
+                    .build()
+                chain.proceed(requestHeaders)
+            }
+            val client = OkHttpClient.Builder()
+                .addInterceptor(authInterceptor)
+                .build()
+
+            val retrofit = Retrofit.Builder()
+                .baseUrl(baseURL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build()
+            return retrofit.create(ApiService::class.java)
+        }
     }
 }
