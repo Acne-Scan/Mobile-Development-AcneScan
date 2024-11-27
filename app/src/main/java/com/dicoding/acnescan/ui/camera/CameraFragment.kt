@@ -24,7 +24,10 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.dicoding.acnescan.database.HistoryEntity
 import com.dicoding.acnescan.databinding.FragmentCameraBinding
+import com.dicoding.acnescan.ui.history.HistoryViewModel
 import java.io.File
 import java.io.FileOutputStream
 import java.util.concurrent.ExecutorService
@@ -37,6 +40,8 @@ class CameraFragment : Fragment() {
 
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
+    private lateinit var historyViewModel: HistoryViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +53,12 @@ class CameraFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Inisialisasi ViewModel
+        historyViewModel = ViewModelProvider(
+            requireActivity(),
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        )[HistoryViewModel::class.java]
 
         // Memastikan permission kamera
         if (allPermissionsGranted()) {
@@ -71,6 +82,7 @@ class CameraFragment : Fragment() {
 
         // Inisialisasi executor kamera
         cameraExecutor = Executors.newSingleThreadExecutor()
+
     }
 
     private fun startCamera() {
@@ -120,8 +132,17 @@ class CameraFragment : Fragment() {
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
+
                     // Koreksi orientasi gambar
                     val correctedImagePath = correctImageOrientation(photoFile)
+
+                    // Simpan ke database Room
+                    saveToDatabase(
+                        title = "Captured Image",
+                        description = "Photo taken on ${System.currentTimeMillis()}",
+                        timestamp = System.currentTimeMillis().toString(),
+                        imagePath = correctedImagePath
+                    )
 
                     // Kirim gambar ke AnalysisActivity dengan path baru
                     val intent = Intent(requireContext(), AnalysisActivity::class.java)
@@ -180,11 +201,20 @@ class CameraFragment : Fragment() {
         }
     }
 
-//    private fun addImageToGallery(uri: Uri) {
-//        val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-//        intent.data = uri
-//        requireContext().sendBroadcast(intent)
-//    }
+    private fun saveToDatabase(title: String, description: String, timestamp: String, imagePath: String) {
+        val historyEntity = HistoryEntity(
+            title = title,
+            description = description,
+            timestamp = timestamp,
+            imagePath = imagePath
+        )
+
+        // Gunakan ViewModel untuk menyimpan data
+        historyViewModel.insert(historyEntity)
+
+        Toast.makeText(requireContext(), "Image saved to history", Toast.LENGTH_SHORT).show()
+    }
+
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(

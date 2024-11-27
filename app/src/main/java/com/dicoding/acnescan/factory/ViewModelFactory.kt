@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.acnescan.response.Repository
-import com.dicoding.acnescan.retrofit.ApiService
 import com.dicoding.acnescan.ui.home.HomeViewModel
 
 class ViewModelFactory (private val Repository : Repository) : ViewModelProvider.NewInstanceFactory() {

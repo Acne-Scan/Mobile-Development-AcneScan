@@ -42,7 +42,7 @@
                 android:id="@+id/history_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ini rekomendasi Skin Carenya"
+                android:text="Ketuk untuk melihat!"
                 android:textSize="14sp"
                 android:textColor="#666666" />
         </LinearLayout>
