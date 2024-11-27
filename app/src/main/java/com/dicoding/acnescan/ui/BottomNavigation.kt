@@ -3,7 +3,7 @@ package com.dicoding.acnescan.ui
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -20,9 +20,13 @@ class BottomNavigation : AppCompatActivity() {
         binding = ActivityBottomNavBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Atur Toolbar sebagai ActionBar
+        setSupportActionBar(binding.toolbar)
+
         val navView: BottomNavigationView = binding.navView
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_bottom_nav)
+        val navController = NavHostFragment.findNavController(supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_bottom_nav)!!)
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(

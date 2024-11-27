@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import com.dicoding.acnescan.databinding.FragmentHomeBinding
 import com.dicoding.acnescan.factory.ViewModelFactory
 import com.dicoding.acnescan.response.ResultState
-import com.dicoding.acnescan.ui.adapters.ArticleAdapter
+import com.dicoding.acnescan.adapter.ArticleAdapter
 
 class HomeFragment : Fragment() {
 
@@ -35,24 +35,52 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Inisialisasi adapter dengan klik handler
+        _articleAdapter = ArticleAdapter { dataItem ->
+            // Handle klik item
+            Log.d("ArticleAdapter", "Clicked item: ${dataItem.name}")
+        }
+
+        // Set adapter ke RecyclerView
         binding.articleCarousel.adapter = _articleAdapter
+
+        // Observasi data dari ViewModel
+        getDataArticles()
     }
 
-    fun getDataArticles() {
+    private fun getDataArticles() {
         homeViewModel.articles.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is ResultState.Loading -> {
-                    // Handle loading state
+                    binding.progressBar.visibility = View.VISIBLE
+                    binding.articleCarousel.visibility = View.GONE // Sembunyikan carousel saat loading
+                    binding.emptyState.visibility = View.GONE // Sembunyikan empty state
                 }
                 is ResultState.Success -> {
-                    // Handle
-//                    _articleAdapter.submitList(result.data)
+                    binding.progressBar.visibility = View.GONE
+                    if (result.data.isNullOrEmpty()) {
+                        // Jika data kosong, tampilkan empty state
+                        binding.articleCarousel.visibility = View.GONE
+                        binding.emptyState.visibility = View.VISIBLE
+                    } else {
+                        // Jika data ada, tampilkan carousel
+                        binding.articleCarousel.visibility = View.VISIBLE
+                        binding.emptyState.visibility = View.GONE
+//                        _articleAdapter.submitList(result.data)
+                    }
                     Log.d("TAG", "getDataArticles: ${result.data}")
                 }
                 is ResultState.Error -> {
-                    // Handle error state
+                    binding.progressBar.visibility = View.GONE
+                    binding.articleCarousel.visibility = View.GONE
+                    binding.emptyState.visibility = View.VISIBLE // Tampilkan empty state saat error
+                    // Anda juga bisa menampilkan pesan error kepada pengguna
+                    Log.e("TAG", "Error loading articles: ${result.message}")
                 }
             }
         }
     }
+
+
+
 }

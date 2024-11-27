@@ -1,8 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.AcneScan" parent="Theme.Material3.DayNight">
+    <style name="Base.Theme.AcneScan" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">#2E4637</item> <!-- Warna untuk AppBar -->
+        <item name="colorPrimaryVariant">#24362A</item>
+        <item name="colorOnPrimary">#FFFFFF</item> <!-- Warna teks pada AppBar -->
     </style>
 
     <style name="Theme.AcneScan" parent="Base.Theme.AcneScan" />

@@ -1,4 +1,4 @@
-package com.dicoding.acnescan.ui.adapters
+package com.dicoding.acnescan.adapter
 
 import android.view.LayoutInflater
 import android.view.View
