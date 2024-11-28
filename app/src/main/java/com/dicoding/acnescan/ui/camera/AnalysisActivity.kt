@@ -1,18 +1,19 @@
 package com.dicoding.acnescan.ui.camera
 
+import ImageClassifierHelper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.exifinterface.media.ExifInterface
 import com.dicoding.acnescan.R
-import com.dicoding.acnescan.helper.ImageClassifierHelper
 import java.io.File
 import java.io.FileInputStream
 
@@ -101,25 +102,22 @@ class AnalysisActivity : AppCompatActivity() {
     }
 
     private fun analyzeImage(bitmap: Bitmap) {
-        val classifier = ImageClassifierHelper(this) // Pastikan helper sudah dikonfigurasi
+        val modelPath = "best_model2.tflite" // Sesuaikan nama model Anda jika berbeda
+        val classifier = ImageClassifierHelper(this, modelPath)
+
         try {
-            // Output buffer untuk hasil prediksi, disesuaikan dengan output shape [1, 5]
-            val outputBuffer = Array(1) { FloatArray(5) }
+            // Jalankan prediksi
+            val (predictedClass, confidence) = classifier.classifyImage(bitmap)
 
-            // Jalankan inferensi (pastikan method classifyImage menerima outputBuffer sebagai parameter)
-            classifier.classifyImage(bitmap, outputBuffer)
+            // Debugging: Log the result of the prediction
+            Log.d("AnalysisActivity", "Predicted Class: $predictedClass, Confidence: $confidence")
 
-            // Proses hasil prediksi
-            val probabilities = outputBuffer[0] // Hasil probabilitas untuk setiap kelas
-            val maxIndex = probabilities.indices.maxByOrNull { probabilities[it] } ?: -1
-            val confidenceScore = probabilities[maxIndex]
+            // Tampilkan hasil prediksi
+            val resultMessage = "Prediksi: $predictedClass\nKepercayaan: ${String.format("%.2f", confidence * 100)}%"
+            Toast.makeText(this, resultMessage, Toast.LENGTH_LONG).show()
 
-            // Daftar nama kelas (sesuaikan dengan model Anda)
-            val classNames = arrayOf("Blackheads", "Cyst", "Papules", "Pustules", "Whiteheads")
-            val predictionType = if (maxIndex in classNames.indices) classNames[maxIndex] else "Unknown"
-
-            // Kirim hasil analisis ke ResultActivity
-            sendAnalysisResult(bitmap, predictionType, confidenceScore)
+            // Kirim hasil ke ResultActivity
+            sendAnalysisResult(bitmap, predictedClass, confidence)
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -128,8 +126,6 @@ class AnalysisActivity : AppCompatActivity() {
             classifier.close()
         }
     }
-
-
 
     private fun sendAnalysisResult(bitmap: Bitmap, predictionType: String, confidenceScore: Float) {
         // Simpan gambar sementara untuk diteruskan ke ResultActivity

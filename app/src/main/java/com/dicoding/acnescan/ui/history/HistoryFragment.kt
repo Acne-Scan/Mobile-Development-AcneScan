@@ -10,29 +10,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.internal.utils.ImageUtil.rotateBitmap
-import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.acnescan.adapter.HistoryAdapter
 import com.dicoding.acnescan.databinding.FragmentHistoryBinding
 import com.dicoding.acnescan.ui.camera.AnalysisActivity
-import java.io.File
-import java.io.FileInputStream
 
 class HistoryFragment : Fragment() {
 
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
 
-    private val favoriteViewModel: HistoryViewModel by viewModels()
-    private lateinit var favoriteAdapter: HistoryAdapter
+    private val historyViewModel: HistoryViewModel by viewModels()
+    private lateinit var historyAdapter: HistoryAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         return binding.root
@@ -43,38 +37,45 @@ class HistoryFragment : Fragment() {
 
         (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        // observe error message
-        favoriteViewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
-            if (errorMessage != null) {
-                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        // mengirim ke analysis activity
-        favoriteAdapter = HistoryAdapter { event ->
+        historyAdapter = HistoryAdapter { event ->
             val intent = Intent(requireContext(), AnalysisActivity::class.java).apply {
-                putExtra(AnalysisActivity.EXTRA_IMAGE_PATH, event.imagePath) // Kirim path gambar
+                putExtra(AnalysisActivity.EXTRA_IMAGE_PATH, event.imagePath)
             }
             startActivity(intent)
         }
 
         binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.historyRecyclerView.adapter = favoriteAdapter
+        binding.historyRecyclerView.adapter = historyAdapter
 
-        // Observe favorite events from ViewModel
-        favoriteViewModel.history.observe(viewLifecycleOwner) { favoriteList ->
-            if (favoriteList.isNullOrEmpty()) {
+        // Observe history data
+        historyViewModel.history.observe(viewLifecycleOwner) { historyList ->
+            if (historyList.isNullOrEmpty()) {
                 binding.historyRecyclerView.visibility = View.GONE
-            }
-            else {
+                binding.placeholderText.visibility = View.VISIBLE
+            } else {
                 binding.historyRecyclerView.visibility = View.VISIBLE
-                favoriteAdapter.submitList(favoriteList)
+                binding.placeholderText.visibility = View.GONE
+                historyAdapter.submitList(historyList)
             }
         }
-    }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        // Tombol Hapus Semua
+        binding.buttonDeleteAll.setOnClickListener {
+            historyViewModel.deleteAllHistory()
+            Toast.makeText(requireContext(), "Semua data history telah dihapus.", Toast.LENGTH_SHORT).show()
+        }
+
+        // Tombol Refresh
+        binding.buttonRefresh.setOnClickListener {
+            historyViewModel.refreshHistory()
+            Toast.makeText(requireContext(), "Data history diperbarui.", Toast.LENGTH_SHORT).show()
+        }
+
+        // Observe error messages
+        historyViewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
+            errorMessage?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

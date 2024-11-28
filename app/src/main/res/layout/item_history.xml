@@ -19,7 +19,7 @@
             android:id="@+id/history_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/pp_patrickk"
+            android:src="@drawable/ic_notifications_black_24dp"
             android:layout_marginEnd="16dp" />
 
         <!-- Content -->
@@ -33,7 +33,7 @@
                 android:id="@+id/history_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kamu sudah Scanning Wajah!"
+                android:text="@string/history_scan"
                 android:textSize="16sp"
                 android:textColor="#000000"
                 android:textStyle="bold" />
@@ -42,7 +42,7 @@
                 android:id="@+id/history_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ketuk untuk melihat!"
+                android:text="@string/history_detail"
                 android:textSize="14sp"
                 android:textColor="#666666" />
         </LinearLayout>
@@ -52,7 +52,7 @@
             android:id="@+id/history_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="11 Menit"
+            android:text="@string/history_timestamp"
             android:textSize="14sp"
             android:textColor="#666666" />
     </LinearLayout>

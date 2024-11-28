@@ -21,13 +21,16 @@ retrofit = "2.9.0"
 cameraView = "1.4.0"
 cameraLifecycle = "1.4.0"
 camerax = "1.4.0"
+roomRuntime = "2.6.0"
 tensorflowLiteSupport = "0.4.4"
 tensorflowLiteMetadata = "0.4.4"
 tensorflowLiteTaskVision = "0.4.4"
-roomCommon = "2.6.1"
-roomKtx = "2.6.1"
+roomCommon = "2.6.0"
+roomKtx = "2.6.0"
 
 [libraries]
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "camerax" }
 camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camerax" }
 camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax" }
