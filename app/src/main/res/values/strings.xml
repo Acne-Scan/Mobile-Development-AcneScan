@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AcneScan</string>
     <string name="JudulApk">AcneScan</string>
-    <string name="masuk_tanpa_login">Masuk Tanpa Login</string>
+    <string name="masuk_tanpa_login">Masuk Ke Dalam Aplikasi</string>
     <string name="masuk_dengan_google">Masuk dengan Google</string>
     <string name="masuk_dengan_email">Masuk dengan Email</string>
     <string name="belum_punya_akun_daftar">Belum punya akun? Daftar</string>

@@ -12,7 +12,6 @@ import com.dicoding.acnescan.R
 import com.dicoding.acnescan.databinding.ItemHistoryBinding
 import com.dicoding.acnescan.database.HistoryEntity
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.Transformation
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.request.RequestOptions

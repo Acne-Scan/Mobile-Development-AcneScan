@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#FFCCCCCC</color> <!-- Light gray for borders and accents -->
+    <color name="lightgrey">#F2F6FF</color>
 
     <!-- Accent Colors -->
     <color name="accent">#81C784</color> <!-- Complementary green accent -->
