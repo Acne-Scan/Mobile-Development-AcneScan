@@ -3,6 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"
+        tools:ignore="ScopedStorage" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +30,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AcneScan"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.camera.ResultActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.camera.AnalysisActivity"
+            android:exported="false" /> <!-- Metadata untuk CameraX -->
+        <meta-data
+            android:name="androidx.camera.lifecycle.CameraXConfig"
+            android:value="androidx.camera.camera2.Camera2Config" />
+
         <activity
             android:name=".ui.BottomNavigation"
             android:exported="false"

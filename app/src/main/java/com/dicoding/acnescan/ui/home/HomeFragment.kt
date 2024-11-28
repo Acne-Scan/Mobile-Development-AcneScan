@@ -1,93 +1,86 @@
 package com.dicoding.acnescan.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
-import com.dicoding.acnescan.R
-import com.dicoding.acnescan.ui.adapters.ArticleAdapter
-import com.dicoding.acnescan.ui.adapters.RecommendationAdapter
-import com.dicoding.acnescan.ui.decorators.CarouselItemDecoration
+import androidx.fragment.app.viewModels
+import com.dicoding.acnescan.databinding.FragmentHomeBinding
+import com.dicoding.acnescan.factory.ViewModelFactory
+import com.dicoding.acnescan.response.ResultState
+import com.dicoding.acnescan.adapter.ArticleAdapter
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var _articleAdapter: ArticleAdapter // Adapter untuk Article
+
+    private val homeViewModel by viewModels<HomeViewModel> {
+        ViewModelFactory.getInstance(requireActivity())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Observasi Greeting Text
-        val greeting = view.findViewById<TextView>(R.id.greeting)
-        homeViewModel.greeting.observe(viewLifecycleOwner) { text ->
-            greeting.text = text
+        // Inisialisasi adapter dengan klik handler
+        _articleAdapter = ArticleAdapter { dataItem ->
+            // Handle klik item
+            Log.d("ArticleAdapter", "Clicked item: ${dataItem.name}")
         }
 
-        // Konfigurasi ViewPager2 untuk Rekomendasi
-        val recommendationCarousel = view.findViewById<ViewPager2>(R.id.recommendation_carousel)
-        homeViewModel.recommendations.observe(viewLifecycleOwner) { recommendations ->
-            recommendationCarousel.adapter = RecommendationAdapter(recommendations)
-            recommendationCarousel.clipToPadding = false
-            recommendationCarousel.clipChildren = false
-            recommendationCarousel.offscreenPageLimit = 3
-            recommendationCarousel.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-            recommendationCarousel.addItemDecoration(CarouselItemDecoration(32)) // Tambahkan margin
+        // Set adapter ke RecyclerView
+        binding.articleCarousel.adapter = _articleAdapter
 
-//            recommendationCarousel.setPageTransformer { page, position ->
-//                val scale = 0.85f + (1 - Math.abs(position)) * 0.15f
-//                page.scaleY = scale
-//                page.alpha = 0.5f + (1 - Math.abs(position)) * 0.5f
-//            }
-        }
+        // Observasi data dari ViewModel
+        getDataArticles()
+    }
 
-
-        // Konfigurasi ViewPager2 untuk Artikel
-        val articleCarousel = view.findViewById<ViewPager2>(R.id.article_carousel)
-        homeViewModel.articles.observe(viewLifecycleOwner) { articles ->
-            articleCarousel.adapter = ArticleAdapter(articles)
-            articleCarousel.clipToPadding = false
-            articleCarousel.clipChildren = false
-            articleCarousel.offscreenPageLimit = 3
-            articleCarousel.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-            articleCarousel.addItemDecoration(CarouselItemDecoration(32))
-
-//            articleCarousel.setPageTransformer { page, position ->
-//                val scale = 0.85f + (1 - Math.abs(position)) * 0.15f
-//                page.scaleY = scale
-//                page.alpha = 0.5f + (1 - Math.abs(position)) * 0.5f
-//            }
+    private fun getDataArticles() {
+        homeViewModel.articles.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is ResultState.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                    binding.articleCarousel.visibility = View.GONE // Sembunyikan carousel saat loading
+                    binding.emptyState.visibility = View.GONE // Sembunyikan empty state
+                }
+                is ResultState.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                    if (result.data.isNullOrEmpty()) {
+                        // Jika data kosong, tampilkan empty state
+                        binding.articleCarousel.visibility = View.GONE
+                        binding.emptyState.visibility = View.VISIBLE
+                    } else {
+                        // Jika data ada, tampilkan carousel
+                        binding.articleCarousel.visibility = View.VISIBLE
+                        binding.emptyState.visibility = View.GONE
+//                        _articleAdapter.submitList(result.data)
+                    }
+                    Log.d("TAG", "getDataArticles: ${result.data}")
+                }
+                is ResultState.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                    binding.articleCarousel.visibility = View.GONE
+                    binding.emptyState.visibility = View.VISIBLE // Tampilkan empty state saat error
+                    // Anda juga bisa menampilkan pesan error kepada pengguna
+                    Log.e("TAG", "Error loading articles: ${result.message}")
+                }
+            }
         }
     }
 
-    // Fungsi untuk menambahkan efek carousel
-    private fun applyCarouselEffect(viewPager: ViewPager2) {
-        viewPager.clipToPadding = false
-        viewPager.clipChildren = false
-        viewPager.offscreenPageLimit = 3
-        viewPager.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
 
-        // Tambahkan dekorasi untuk margin antar item
-        viewPager.addItemDecoration(CarouselItemDecoration(margin = 32))
 
-        // Tambahkan efek carousel
-        viewPager.setPageTransformer { page, position ->
-            val scale = 0.85f + (1 - Math.abs(position)) * 0.15f
-            page.scaleY = scale
-            page.scaleX = scale
-            page.alpha = 0.5f + (1 - Math.abs(position)) * 0.5f
-        }
-    }
 }

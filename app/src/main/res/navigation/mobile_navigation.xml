@@ -14,12 +14,18 @@
     <fragment
         android:id="@+id/navigation_rekomendasi"
         android:name="com.dicoding.acnescan.ui.rekomendasi.RekomendasiFragment"
-        android:label="@string/title_rekomendasi"
+        android:label="@string/title_recommendation"
         tools:layout="@layout/fragment_rekomendasi" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.dicoding.acnescan.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:name="com.dicoding.acnescan.ui.history.HistoryFragment"
+        android:label="@string/title_history"
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/navigation_camera"
+        android:name="com.dicoding.acnescan.ui.camera.CameraFragment"
+        android:label="@string/title_camera"
+        tools:layout="@layout/fragment_camera" />
 </navigation>

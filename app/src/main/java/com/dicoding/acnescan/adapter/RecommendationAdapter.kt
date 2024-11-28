@@ -1,4 +1,4 @@
-package com.dicoding.acnescan.ui.adapters
+package com.dicoding.acnescan.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -33,4 +33,10 @@ class RecommendationAdapter(private var items: List<RecommendationItem>) :
     }
 
     override fun getItemCount(): Int = items.size
+
+    // Fungsi untuk memperbarui data jika dibutuhkan
+    fun updateDataRecommendation(newRecommendations: List<RecommendationItem>) {
+        items = newRecommendations
+        notifyDataSetChanged()
+    }
 }

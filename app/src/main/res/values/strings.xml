@@ -14,15 +14,27 @@
     <string name="saya_setuju_dengan_ketentuan_layanan_dan_kebijakan_privasi_acnescan">Saya setuju dengan Ketentuan Layanan dan Kebijakan Privasi AcneScan.</string>
     <string name="daftar">Daftar</string>
     <string name="sudah_punya_akun_masuk">Sudah punya akun? Masuk</string>
+
     <string name="title_activity_bottom_nav">bottom_nav</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="title_rekomendasi">Rekomendasi</string>
-    <string name="title_kamera">Kamera</string>
+    <string name="title_recommendation">Recommendation</string>
+    <string name="title_camera">Camera</string>
     <string name="title_profile">Profile</string>
+    <string name="title_gallery">Gallery</string>
+    <string name="title_history">History</string>
+
     <string name="product_image">Product Image</string>
     <string name="navigate_arrow">Navigate to product details</string>
     <string name="skincare">Skincare</string>
     <string name="search_product">Search Product</string>
+    <string name="article_image">Article Image</string>
+    <string name="image_analysis">Image Analysis</string>
+    <string name="analysis_results">Judul Gambar</string>
+    <string name="result_placeholder">Hasil Analisis</string>
+    <string name="button_back">Back</string>
+    <string name="button_analyze">Analyze</string>
+    <string name="tipe_jerawat">Tipe Jerawat: </string>
+    <string name="confidence_score">Confidence Score: 90%</string>
 </resources>
