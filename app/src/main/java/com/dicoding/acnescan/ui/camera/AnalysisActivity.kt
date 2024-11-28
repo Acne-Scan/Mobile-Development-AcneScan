@@ -1,6 +1,5 @@
 package com.dicoding.acnescan.ui.camera
 
-import ImageClassifierHelper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -14,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.exifinterface.media.ExifInterface
 import com.dicoding.acnescan.R
+import com.dicoding.acnescan.helper.ImageClassifierHelper
 import java.io.File
 import java.io.FileInputStream
 

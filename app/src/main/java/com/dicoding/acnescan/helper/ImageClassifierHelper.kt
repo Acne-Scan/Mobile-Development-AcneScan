@@ -1,3 +1,5 @@
+package com.dicoding.acnescan.helper
+
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -9,10 +11,6 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.math.exp
-
-import android.os.Environment
-import java.io.File
-import java.io.FileOutputStream
 
 class ImageClassifierHelper(context: Context, modelPath: String) {
 
@@ -54,26 +52,6 @@ class ImageClassifierHelper(context: Context, modelPath: String) {
         }
         return byteBuffer
     }
-
-    /**
-     * Save a Bitmap as a PNG file in the app's external storage directory.
-     */
-//    private fun saveBitmapToLocal(bitmap: Bitmap, fileName: String) {
-//        try {
-//            val storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-//            val outputFile = File(storageDir, fileName)
-//
-//            val outputStream = FileOutputStream(outputFile)
-//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-//            outputStream.flush()
-//            outputStream.close()
-//
-//            // Log the location of the saved file
-//            Log.d("ImageClassifierHelper", "Bitmap saved to: ${outputFile.absolutePath}")
-//        } catch (e: Exception) {
-//            Log.e("ImageClassifierHelper", "Error saving bitmap: ${e.message}")
-//        }
-//    }
 
     /**
      * Apply softmax to the raw logits.

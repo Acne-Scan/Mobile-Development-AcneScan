@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AcneScan</string>
     <string name="JudulApk">AcneScan</string>
-    <string name="masuk_tanpa_login">Masuk Tanpa Login</string>
+    <string name="masuk_tanpa_login">Masuk Ke Dalam Aplikasi</string>
     <string name="masuk_dengan_google">Masuk dengan Google</string>
     <string name="masuk_dengan_email">Masuk dengan Email</string>
     <string name="belum_punya_akun_daftar">Belum punya akun? Daftar</string>
@@ -14,6 +14,7 @@
     <string name="saya_setuju_dengan_ketentuan_layanan_dan_kebijakan_privasi_acnescan">Saya setuju dengan Ketentuan Layanan dan Kebijakan Privasi AcneScan.</string>
     <string name="daftar">Daftar</string>
     <string name="sudah_punya_akun_masuk">Sudah punya akun? Masuk</string>
+    <string name="Introduction">Selamat datang di AcneScan, aplikasi untuk menganalisa kondisi kulit Anda.</string>
 
     <string name="title_activity_bottom_nav">bottom_nav</string>
     <string name="title_home">Home</string>

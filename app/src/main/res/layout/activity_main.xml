@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4F6D58">
+    android:background="#365545"
+    android:padding="16dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -11,86 +12,40 @@
         <!-- Logo Image -->
         <ImageView
             android:id="@+id/logoImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="130dp"
+            android:layout_marginTop="100dp"
             android:contentDescription="@string/logo_icon"
-            android:src="@drawable/pp_patrickk" />
+            android:src="@drawable/acnescan_logo" />
 
-        <!-- App Name -->
-        <TextView
-            android:id="@+id/appName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/logoImage"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:text="@string/JudulApk"
-            android:textColor="#FFFFFF"
-            android:textSize="34sp"
-            android:textStyle="bold" />
-
-        <!-- Login Without Account Button -->
+        <!-- Button Login -->
         <Button
             android:id="@+id/btnLoginWithoutAccount"
-            android:layout_width="320dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/appName"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="150dp"
-            android:layout_marginEnd="50dp"
+            android:layout_below="@id/logoImage"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="32dp"
             android:backgroundTint="#000000"
             android:drawableLeft="@drawable/ic_login"
             android:text="@string/masuk_tanpa_login"
             android:textColor="#FFFFFF" />
 
-        <!-- Login with Google Button -->
-        <Button
-            android:id="@+id/btnLoginWithGoogle"
-            android:layout_width="320dp"
+        <!-- Introduction Text -->
+        <TextView
+            android:id="@+id/introductionText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/btnLoginWithoutAccount"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="50dp"
-            android:backgroundTint="#FFFFFF"
-            android:drawableLeft="@drawable/ic_google"
-            android:text="@string/masuk_dengan_google"
-            android:textColor="#000000" />
-
-        <!-- Login with Email Button -->
-        <Button
-            android:id="@+id/btnLoginWithEmail"
-            android:layout_width="320dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btnLoginWithGoogle"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="50dp"
-            android:backgroundTint="#FFFFFF"
-            android:drawableLeft="@drawable/ic_email"
-            android:text="@string/masuk_dengan_email"
-            android:textColor="#000000" />
-
-        <!-- Register Text -->
-        <TextView
-            android:id="@+id/tvRegister"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btnLoginWithEmail"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="26dp"
-            android:layout_marginBottom="80dp"
-            android:text="@string/belum_punya_akun_daftar"
-            android:textColor="#FFFFFF" />
-
+            android:layout_marginTop="33dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/Introduction"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
     </RelativeLayout>
 </ScrollView>
