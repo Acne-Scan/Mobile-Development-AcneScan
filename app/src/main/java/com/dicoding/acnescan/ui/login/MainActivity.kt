@@ -13,13 +13,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Tambahkan event klik untuk tombol "Masuk Tanpa Login"
         val btnLoginWithoutAccount: Button = findViewById(R.id.btnLoginWithoutAccount)
         btnLoginWithoutAccount.setOnClickListener {
             Log.d("MainActivity", "Button clicked")
             val intent = Intent(this, BottomNavigation::class.java)
             startActivity(intent)
+            finish()
         }
-
     }
 }
