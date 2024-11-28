@@ -37,4 +37,5 @@
     <string name="button_analyze">Analyze</string>
     <string name="tipe_jerawat">Tipe Jerawat: </string>
     <string name="confidence_score">Confidence Score: 90%</string>
+    <string name="history_data_kosong">Tidak ada riwayat untuk ditampilkan.</string>
 </resources>

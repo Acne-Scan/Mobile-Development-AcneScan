@@ -14,12 +14,6 @@ import kotlinx.coroutines.launch
 class HistoryViewModel(application: Application) : AndroidViewModel(application) {
 
     // LiveData yang akan diobservasi oleh Fragment
-
-    private val historyDao: HistoryDao = HistoryDatabase.getDatabase(application).historyDao()
-
-    // Mengambil data dari database menggunakan LiveData
-    val allHistory: LiveData<List<HistoryEntity>> = historyDao.getAllHistory()
-
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> get() = _errorMessage
 

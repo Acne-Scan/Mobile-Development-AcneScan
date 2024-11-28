@@ -101,11 +101,22 @@ class AnalysisActivity : AppCompatActivity() {
     }
 
     private fun analyzeImage(bitmap: Bitmap) {
-        val classifier = ImageClassifierHelper(this)
+        val classifier = ImageClassifierHelper(this) // Pastikan helper sudah dikonfigurasi
         try {
-            val prediction = classifier.classifyImage(bitmap)
-            val predictionType = prediction.first
-            val confidenceScore = prediction.second
+            // Output buffer untuk hasil prediksi, disesuaikan dengan output shape [1, 5]
+            val outputBuffer = Array(1) { FloatArray(5) }
+
+            // Jalankan inferensi (pastikan method classifyImage menerima outputBuffer sebagai parameter)
+            classifier.classifyImage(bitmap, outputBuffer)
+
+            // Proses hasil prediksi
+            val probabilities = outputBuffer[0] // Hasil probabilitas untuk setiap kelas
+            val maxIndex = probabilities.indices.maxByOrNull { probabilities[it] } ?: -1
+            val confidenceScore = probabilities[maxIndex]
+
+            // Daftar nama kelas (sesuaikan dengan model Anda)
+            val classNames = arrayOf("Blackheads", "Cyst", "Papules", "Pustules", "Whiteheads")
+            val predictionType = if (maxIndex in classNames.indices) classNames[maxIndex] else "Unknown"
 
             // Kirim hasil analisis ke ResultActivity
             sendAnalysisResult(bitmap, predictionType, confidenceScore)
@@ -117,6 +128,8 @@ class AnalysisActivity : AppCompatActivity() {
             classifier.close()
         }
     }
+
+
 
     private fun sendAnalysisResult(bitmap: Bitmap, predictionType: String, confidenceScore: Float) {
         // Simpan gambar sementara untuk diteruskan ke ResultActivity

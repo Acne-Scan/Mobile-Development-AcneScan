@@ -62,26 +62,28 @@ class ImageClassifierHelper(private val context: Context) {
      * @param bitmap Bitmap gambar input
      * @return Pair<String, Float> - Hasil klasifikasi dan tingkat kepercayaan
      */
-    fun classifyImage(bitmap: Bitmap): Pair<String, Float> {
+    fun classifyImage(bitmap: Bitmap, outputBuffer: Array<FloatArray>): Pair<String, Float> {
         // Preprocess gambar sebelum inferensi
         val input = preprocessImage(bitmap)
 
-        // Output array (disesuaikan untuk model 2 kelas: [jerawat, tidak jerawat])
-        val output = Array(1) { FloatArray(2) }
+        // Output array (disesuaikan untuk model dengan 5 kelas)
+        val output = Array(1) { FloatArray(5) } // Output shape [1, 5]
 
         // Jalankan inferensi
         interpreter?.run(input, output)
 
-        // Ambil hasil prediksi
-        val predictionType = if (output[0][0] > output[0][1]) "Jerawat" else "Tidak Jerawat"
-        val confidenceScore = output[0].maxOrNull() ?: 0f
+        // Ambil hasil prediksi (kelas dengan probabilitas tertinggi)
+        val probabilities = output[0] // FloatArray(5), hasil probabilitas untuk setiap kelas
+        val maxIndex = probabilities.indices.maxByOrNull { probabilities[it] } ?: -1
+        val confidenceScore = probabilities[maxIndex]
+
+        // Nama kelas berdasarkan indeks
+        val classNames = arrayOf("Blackheads", "Cyst", "Papules", "Pustules", "Whiteheads") // Sesuaikan nama kelas Anda
+        val predictionType = if (maxIndex in classNames.indices) classNames[maxIndex] else "Unknown"
 
         return Pair(predictionType, confidenceScore)
     }
 
-    /**
-     * Menutup interpreter untuk membersihkan sumber daya
-     */
     fun close() {
         interpreter?.close()
         interpreter = null
