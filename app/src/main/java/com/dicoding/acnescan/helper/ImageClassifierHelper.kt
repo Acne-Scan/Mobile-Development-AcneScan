@@ -1,89 +1,139 @@
-package com.dicoding.acnescan.helper
-
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.util.Log
+import org.tensorflow.lite.DataType
 import org.tensorflow.lite.Interpreter
-import java.io.FileInputStream
+import org.tensorflow.lite.support.common.FileUtil
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.nio.channels.FileChannel
+import kotlin.math.exp
 
-class ImageClassifierHelper(private val context: Context) {
+import android.os.Environment
+import java.io.File
+import java.io.FileOutputStream
 
-    private var interpreter: Interpreter? = null
+class ImageClassifierHelper(context: Context, modelPath: String) {
+
+    private val interpreter: Interpreter
+    private val inputImageSize = 150
+    private val numClasses = 5
 
     init {
-        try {
-            // Memuat model TFLite dari assets
-            val assetManager = context.assets
-            val modelPath = "best_model2.tflite" // Ganti dengan nama model Anda
-            val fileDescriptor = assetManager.openFd(modelPath)
-            val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
-            val fileChannel = inputStream.channel
-            val startOffset = fileDescriptor.startOffset
-            val declaredLength = fileDescriptor.declaredLength
-            val mappedByteBuffer =
-                fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
-
-            // Membuat Interpreter untuk model
-            interpreter = Interpreter(mappedByteBuffer)
-        } catch (e: Exception) {
-            Log.e("ImageClassifierHelper", "Error loading model: ${e.message}")
-        }
+        // Load the TFLite model
+        val model = FileUtil.loadMappedFile(context, modelPath)
+        interpreter = Interpreter(model)
     }
 
     /**
-     * Preprocessing gambar untuk memenuhi format input model TFLite
+     * Preprocesses a Bitmap to the required input format.
      */
     private fun preprocessImage(bitmap: Bitmap): ByteBuffer {
-        val width = 150 // Dimensi input model
-        val height = 150
-        val byteBuffer = ByteBuffer.allocateDirect(4 * width * height * 3) // 4 byte untuk Float
-        byteBuffer.order(ByteOrder.nativeOrder())
+        // Resize the bitmap to the expected input size
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, inputImageSize, inputImageSize, true)
 
-        // Resize bitmap ke ukuran model
-        val resizedBitmap = Bitmap.createScaledBitmap(bitmap, width, height, true)
+        // Save the scaledBitmap locally for debugging
+//        saveBitmapToLocal(scaledBitmap, "scaled_bitmap.png")
 
-        // Normalisasi nilai pixel dan salin ke ByteBuffer
-        for (y in 0 until height) {
-            for (x in 0 until width) {
-                val pixel = resizedBitmap.getPixel(x, y)
-                byteBuffer.putFloat(((pixel shr 16) and 0xFF) / 255.0f) // Red
-                byteBuffer.putFloat(((pixel shr 8) and 0xFF) / 255.0f)  // Green
-                byteBuffer.putFloat((pixel and 0xFF) / 255.0f)          // Blue
+        // Log the input image size for debugging
+        Log.d("ImageClassifierHelper", "Input image size: ${scaledBitmap.width}x${scaledBitmap.height}")
+
+        // Allocate a ByteBuffer for the image data
+        val byteBuffer = ByteBuffer.allocateDirect(4 * inputImageSize * inputImageSize * 3)
+        byteBuffer.order(ByteOrder.nativeOrder()) // Set the byte order
+
+        // Convert bitmap pixels to a ByteBuffer in RGB format and normalize to [0, 1]
+        for (y in 0 until inputImageSize) {
+            for (x in 0 until inputImageSize) {
+                val pixel = scaledBitmap.getPixel(x, y)
+                byteBuffer.putFloat(Color.red(pixel) / 255.0f) // Normalize Red
+                byteBuffer.putFloat(Color.green(pixel) / 255.0f) // Normalize Green
+                byteBuffer.putFloat(Color.blue(pixel) / 255.0f) // Normalize Blue
             }
         }
         return byteBuffer
     }
 
     /**
-     * Fungsi untuk menjalankan inferensi gambar
-     * @param bitmap Bitmap gambar input
-     * @return Pair<String, Float> - Hasil klasifikasi dan tingkat kepercayaan
+     * Save a Bitmap as a PNG file in the app's external storage directory.
      */
-    fun classifyImage(bitmap: Bitmap): Pair<String, Float> {
-        // Preprocess gambar sebelum inferensi
-        val input = preprocessImage(bitmap)
-
-        // Output array (disesuaikan untuk model 2 kelas: [jerawat, tidak jerawat])
-        val output = Array(1) { FloatArray(2) }
-
-        // Jalankan inferensi
-        interpreter?.run(input, output)
-
-        // Ambil hasil prediksi
-        val predictionType = if (output[0][0] > output[0][1]) "Jerawat" else "Tidak Jerawat"
-        val confidenceScore = output[0].maxOrNull() ?: 0f
-
-        return Pair(predictionType, confidenceScore)
-    }
+//    private fun saveBitmapToLocal(bitmap: Bitmap, fileName: String) {
+//        try {
+//            val storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+//            val outputFile = File(storageDir, fileName)
+//
+//            val outputStream = FileOutputStream(outputFile)
+//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+//            outputStream.flush()
+//            outputStream.close()
+//
+//            // Log the location of the saved file
+//            Log.d("ImageClassifierHelper", "Bitmap saved to: ${outputFile.absolutePath}")
+//        } catch (e: Exception) {
+//            Log.e("ImageClassifierHelper", "Error saving bitmap: ${e.message}")
+//        }
+//    }
 
     /**
-     * Menutup interpreter untuk membersihkan sumber daya
+     * Apply softmax to the raw logits.
      */
-    fun close() {
-        interpreter?.close()
-        interpreter = null
+    private fun applySoftmax(logits: FloatArray): FloatArray {
+        // To improve clarity, I'll use a simple loop instead of `map`
+        val expValues = FloatArray(logits.size)
+        var sumExpValues = 0f
+
+        // Calculate exp(logits) for each value
+        for (i in logits.indices) {
+            expValues[i] = exp(logits[i].toDouble()).toFloat()
+            sumExpValues += expValues[i]
+        }
+
+        // Normalize to get probabilities
+        for (i in expValues.indices) {
+            expValues[i] /= sumExpValues
+        }
+
+        return expValues
     }
+
+
+    /**
+     * Runs inference on the input Bitmap and returns predictions.
+     */
+    fun classifyImage(bitmap: Bitmap): Pair<String, Float> {
+        val inputBuffer = preprocessImage(bitmap)
+
+        // Allocate output buffer
+        val outputBuffer = TensorBuffer.createFixedSize(intArrayOf(1, numClasses), DataType.FLOAT32)
+
+        // Run the model
+        interpreter.run(inputBuffer, outputBuffer.buffer.rewind())
+
+        // Get the raw output array (logits)
+        val outputArray = outputBuffer.floatArray
+
+        // Tambahkan log untuk melihat output mentah
+        Log.d("ModelOutput", "Raw Output: ${outputArray.joinToString()}")
+
+        // Apply Softmax to logits
+        val probabilities = applySoftmax(outputArray)
+
+        // Debugging: Log the probabilities after Softmax
+        Log.d("ImageClassifierHelper", "Softmax Probabilities: ${probabilities.joinToString()}")
+
+        // Get the class with the highest probability
+        val maxIndex = probabilities.indices.maxByOrNull { probabilities[it] } ?: -1
+        val predictedClass = if (maxIndex >= 0) classLabels[maxIndex] else "Unknown"
+        val confidence = probabilities[maxIndex]
+
+        return Pair(predictedClass, confidence)
+    }
+
+    fun close() {
+        interpreter.close()
+    }
+
+    // Define the class labels in the correct order as per your model
+    private val classLabels = listOf("Blackheads", "Cyst", "Papules", "Pustules", "Whiteheads")
 }

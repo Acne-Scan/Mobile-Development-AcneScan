@@ -37,4 +37,17 @@
     <string name="button_analyze">Analyze</string>
     <string name="tipe_jerawat">Tipe Jerawat: </string>
     <string name="confidence_score">Confidence Score: 90%</string>
+    <string name="history_data_kosong">Tidak ada riwayat untuk ditampilkan.</string>
+    <string name="history_scan">Kamu sudah Scanning Wajah!</string>
+    <string name="history_detail">Ketuk untuk melihat!</string>
+    <string name="history_timestamp">11 Menit</string>
+    <string name="recommendation_image">Recommendation Image</string>
+    <string name="product_name">Product Name</string>
+    <string name="product_category">Category</string>
+    <string name="search">Search...</string>
+    <string name="rekomendasi_facial_wash">Rekomendasi Facial Wash</string>
+    <string name="artikel">Artikel</string>
+    <string name="belum_ada_artikel_yang_tersedia_saat_ini">Belum ada artikel yang tersedia saat ini.</string>
+    <string name="history_delete">Hapus Semua History</string>
+    <string name="history_refresh">Refresh</string>
 </resources>

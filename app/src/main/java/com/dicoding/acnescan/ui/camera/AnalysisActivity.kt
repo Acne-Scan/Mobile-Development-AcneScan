@@ -1,18 +1,19 @@
 package com.dicoding.acnescan.ui.camera
 
+import ImageClassifierHelper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.exifinterface.media.ExifInterface
 import com.dicoding.acnescan.R
-import com.dicoding.acnescan.helper.ImageClassifierHelper
 import java.io.File
 import java.io.FileInputStream
 
@@ -101,14 +102,22 @@ class AnalysisActivity : AppCompatActivity() {
     }
 
     private fun analyzeImage(bitmap: Bitmap) {
-        val classifier = ImageClassifierHelper(this)
-        try {
-            val prediction = classifier.classifyImage(bitmap)
-            val predictionType = prediction.first
-            val confidenceScore = prediction.second
+        val modelPath = "best_model2.tflite" // Sesuaikan nama model Anda jika berbeda
+        val classifier = ImageClassifierHelper(this, modelPath)
 
-            // Kirim hasil analisis ke ResultActivity
-            sendAnalysisResult(bitmap, predictionType, confidenceScore)
+        try {
+            // Jalankan prediksi
+            val (predictedClass, confidence) = classifier.classifyImage(bitmap)
+
+            // Debugging: Log the result of the prediction
+            Log.d("AnalysisActivity", "Predicted Class: $predictedClass, Confidence: $confidence")
+
+            // Tampilkan hasil prediksi
+            val resultMessage = "Prediksi: $predictedClass\nKepercayaan: ${String.format("%.2f", confidence * 100)}%"
+            Toast.makeText(this, resultMessage, Toast.LENGTH_LONG).show()
+
+            // Kirim hasil ke ResultActivity
+            sendAnalysisResult(bitmap, predictedClass, confidence)
 
         } catch (e: Exception) {
             e.printStackTrace()

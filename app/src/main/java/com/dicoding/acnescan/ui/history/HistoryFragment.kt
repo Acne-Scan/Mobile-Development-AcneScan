@@ -1,6 +1,9 @@
 package com.dicoding.acnescan.ui.history
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,13 +22,11 @@ class HistoryFragment : Fragment() {
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
 
-    private val favoriteViewModel: HistoryViewModel by viewModels()
-    private lateinit var favoriteAdapter: HistoryAdapter
+    private val historyViewModel: HistoryViewModel by viewModels()
+    private lateinit var historyAdapter: HistoryAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         return binding.root
@@ -36,35 +37,45 @@ class HistoryFragment : Fragment() {
 
         (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        // observe error message
-        favoriteViewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
-            if (errorMessage != null) {
-                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+        historyAdapter = HistoryAdapter { event ->
+            val intent = Intent(requireContext(), AnalysisActivity::class.java).apply {
+                putExtra(AnalysisActivity.EXTRA_IMAGE_PATH, event.imagePath)
             }
-        }
-
-        favoriteAdapter = HistoryAdapter { event ->
-            val intent = Intent(requireContext(), AnalysisActivity::class.java)
-            intent.putExtra("HISTORY_ID", event.id)
             startActivity(intent)
         }
-        binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.historyRecyclerView.adapter = favoriteAdapter
 
-        // Observe favorite events from ViewModel
-        favoriteViewModel.history.observe(viewLifecycleOwner) { favoriteList ->
-            if (favoriteList.isNullOrEmpty()) {
+        binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.historyRecyclerView.adapter = historyAdapter
+
+        // Observe history data
+        historyViewModel.history.observe(viewLifecycleOwner) { historyList ->
+            if (historyList.isNullOrEmpty()) {
                 binding.historyRecyclerView.visibility = View.GONE
-            }
-            else {
+                binding.placeholderText.visibility = View.VISIBLE
+            } else {
                 binding.historyRecyclerView.visibility = View.VISIBLE
-                favoriteAdapter.submitList(favoriteList)
+                binding.placeholderText.visibility = View.GONE
+                historyAdapter.submitList(historyList)
             }
         }
-    }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        // Tombol Hapus Semua
+        binding.buttonDeleteAll.setOnClickListener {
+            historyViewModel.deleteAllHistory()
+            Toast.makeText(requireContext(), "Semua data history telah dihapus.", Toast.LENGTH_SHORT).show()
+        }
+
+        // Tombol Refresh
+        binding.buttonRefresh.setOnClickListener {
+            historyViewModel.refreshHistory()
+            Toast.makeText(requireContext(), "Data history diperbarui.", Toast.LENGTH_SHORT).show()
+        }
+
+        // Observe error messages
+        historyViewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
+            errorMessage?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

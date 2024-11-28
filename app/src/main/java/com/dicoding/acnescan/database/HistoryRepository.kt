@@ -1,26 +1,27 @@
 package com.dicoding.acnescan.database
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
-class HistoryRepository (application: Application) {
+class HistoryRepository(application: Application) {
     private val mHistoryDAO: HistoryDao
-    private val executorService: ExecutorService = Executors.newSingleThreadScheduledExecutor()
 
     init {
         val db = HistoryDatabase.getDatabase(application)
         mHistoryDAO = db.historyDao()
     }
 
-    fun getAllHistory(): LiveData<List<HistoryEntity>> = mHistoryDAO.getAllHistory()
-
-    fun insert (favoriteEvent: HistoryEntity) {
-        executorService.execute { mHistoryDAO.insert(favoriteEvent) }
+    // Suspend function untuk mengambil semua data history
+    suspend fun getAllHistory(): List<HistoryEntity> {
+        return mHistoryDAO.getAllHistory()
     }
 
-//    fun delete (favoriteEvent: HistoryEntity) {
-//        executorService.execute { mHistoryDAO.delete(favoriteEvent) }
-//    }
+    // Suspend function untuk menyisipkan data
+    suspend fun insert(history: HistoryEntity) {
+        mHistoryDAO.insert(history)
+    }
+
+    // Suspend function untuk menghapus semua history
+    suspend fun deleteAllHistory() {
+        mHistoryDAO.deleteAllHistory()
+    }
 }

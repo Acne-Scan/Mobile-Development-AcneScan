@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey"
     android:padding="16dp">
 
 
@@ -49,7 +50,7 @@
         android:id="@+id/search_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Search..."
+        android:hint="@string/search"
         android:padding="12dp"
         app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +62,7 @@
         android:id="@+id/recommendation_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rekomendasi Facial Wash"
+        android:text="@string/rekomendasi_facial_wash"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/search_bar"
@@ -86,7 +87,7 @@
         android:id="@+id/article_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Artikel"
+        android:text="@string/artikel"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/recommendation_carousel"
@@ -110,7 +111,7 @@
         android:id="@+id/empty_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Belum ada artikel yang tersedia saat ini."
+        android:text="@string/belum_ada_artikel_yang_tersedia_saat_ini"
         android:visibility="gone"
         android:textSize="16sp"
         android:gravity="center"
