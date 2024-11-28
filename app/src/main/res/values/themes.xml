@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base theme for the app -->
+    <style name="Base.Theme.AcneScan" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#2E4637</item> <!-- Warna untuk AppBar -->
+        <item name="colorPrimaryVariant">#24362A</item>
+        <item name="colorOnPrimary">#FFFFFF</item> <!-- Warna teks pada AppBar -->
+    </style>
+
+    <style name="Theme.Splash" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_new</item>
+    </style>
+
+    <style name="Theme.Acnescan.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
+    <style name="Theme.AcneScan" parent="Base.Theme.AcneScan" />
+</resources>

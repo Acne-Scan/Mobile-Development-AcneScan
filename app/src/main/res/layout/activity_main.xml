@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#365545"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Logo Image -->
+        <ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:contentDescription="@string/logo_icon"
+            android:src="@drawable/logo_acnescan" />
+
+        <!-- Button Login -->
+        <Button
+            android:id="@+id/btnLoginWithoutAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/logoImage"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="32dp"
+            android:backgroundTint="#000000"
+            android:drawableLeft="@drawable/ic_login"
+            android:text="@string/masuk_tanpa_login"
+            android:textColor="#FFFFFF" />
+
+        <!-- Introduction Text -->
+        <TextView
+            android:id="@+id/introductionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnLoginWithoutAccount"
+            android:layout_marginTop="33dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/Introduction"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+    </RelativeLayout>
+</ScrollView>
