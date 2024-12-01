@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/lightgrey"
     android:fitsSystemWindows="true"
     tools:context=".ui.camera.CameraFragment">
 
@@ -39,12 +39,30 @@
         android:id="@+id/gallery_button"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginEnd="52dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="48dp"
         android:layout_marginBottom="28dp"
         android:background="@drawable/bg_button_round"
         android:contentDescription="@string/title_gallery"
         android:src="@drawable/ic_gallery"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/capture_button" />
+        app:layout_constraintEnd_toStartOf="@id/capture_button"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Flip Camera -->
+    <ImageButton
+        android:id="@+id/switchCameraButton"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/bg_button_round"
+        android:contentDescription="@string/title_gallery"
+        android:src="@drawable/ic_flip_camera_android"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/capture_button" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -68,7 +68,7 @@ dependencies {
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.camera.lifecycle)
 
-    //kamerax
+    //camerax
     implementation (libs.camera.core)
     implementation (libs.camera.camera2)
     implementation (libs.camera.lifecycle)
@@ -79,6 +79,7 @@ dependencies {
     implementation (libs.converter.gson)
     implementation (libs.logging.interceptor)
     implementation (libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.lifecycle.runtime.ktx)//untuk lifecycleScope
 
     //tflite
     implementation(libs.tensorflow.lite.task.vision)

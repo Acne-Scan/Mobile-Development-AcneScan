@@ -4,76 +4,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     android:background="@color/lightgrey"
     tools:context=".ui.camera.ResultActivity">
 
-    <!-- ImageView untuk menampilkan gambar hasil analisis -->
-    <ImageView
-        android:id="@+id/image_view"
+    <!-- ScrollView untuk memastikan tampilan bisa di-scroll -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/image_analysis"
-        android:scaleType="fitCenter"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/result_text_container"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Kontainer untuk menampilkan hasil analisis -->
-    <LinearLayout
-        android:id="@+id/result_text_container"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:orientation="vertical"
-        android:padding="16dp"
+        android:layout_marginTop="16dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Judul hasil analisis -->
-        <TextView
-            android:id="@+id/analysis_result_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/result_placeholder"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginBottom="8dp" />
-
-        <!-- TextView untuk menampilkan hasil analisis jerawat -->
-        <TextView
-            android:id="@+id/analysis_result_type"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/tipe_jerawat"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="8dp" />
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
 
-        <!-- TextView untuk menampilkan confidence score -->
-        <TextView
-            android:id="@+id/analysis_result_confidence"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/confidence_score"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="8dp" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
 
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/imageViewPlaceholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_marginBottom="16dp"
+                    android:contentDescription="@string/image_placeholder"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/pp_patrickk" />
 
-    <!-- Tombol untuk kembali ke halaman sebelumnya -->
+                <!-- Judul Prediksi -->
+                <TextView
+                    android:id="@+id/predictionTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/result_placeholder"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+                <!-- Persentase Kepercayaan -->
+                <TextView
+                    android:id="@+id/confidenceScore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/confidence_score"
+                    android:textSize="18sp"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/recommendationTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rekomendasi_facial_wash"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_recommendation"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Tombol Kembali -->
     <Button
-        android:id="@+id/button_back"
+        android:id="@+id/buttonBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_alignParentBottom="true"
         android:text="@string/button_back"
-        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

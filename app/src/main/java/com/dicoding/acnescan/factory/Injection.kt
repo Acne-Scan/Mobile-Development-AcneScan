@@ -1,8 +1,8 @@
 package com.dicoding.acnescan.factory
 
 import android.content.Context
-import com.dicoding.acnescan.response.Repository
-import com.dicoding.acnescan.retrofit.ApiConfig
+import com.dicoding.acnescan.data.response.Repository
+import com.dicoding.acnescan.data.retrofit.ApiConfig
 
 object Injection {
     fun provideUserRepository (context: Context) : Repository {

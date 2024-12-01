@@ -1,9 +1,6 @@
 package com.dicoding.acnescan.ui.history
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.acnescan.adapter.HistoryAdapter
+import com.dicoding.acnescan.data.adapter.HistoryAdapter
 import com.dicoding.acnescan.databinding.FragmentHistoryBinding
 import com.dicoding.acnescan.ui.camera.AnalysisActivity
 

@@ -36,7 +36,7 @@
     <string name="result_placeholder">Hasil Analisis</string>
     <string name="button_back">Back</string>
     <string name="button_analyze">Analyze</string>
-    <string name="tipe_jerawat">Tipe Jerawat: </string>
+    <string name="tipe_jerawat">Tipe Jerawat</string>
     <string name="confidence_score">Confidence Score: 90%</string>
     <string name="history_data_kosong">Tidak ada riwayat untuk ditampilkan.</string>
     <string name="history_scan">Kamu sudah Scanning Wajah!</string>
@@ -51,4 +51,5 @@
     <string name="belum_ada_artikel_yang_tersedia_saat_ini">Belum ada artikel yang tersedia saat ini.</string>
     <string name="history_delete">Hapus Semua History</string>
     <string name="history_refresh">Refresh</string>
+    <string name="image_placeholder">Image Placeholder</string>
 </resources>
