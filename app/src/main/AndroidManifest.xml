@@ -30,27 +30,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AcneScan"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ui.detail.articles.DetailArticlesActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.login.Splash"
             android:exported="true"
             android:theme="@style/Theme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.login.MainActivity"
             android:exported="true" />
-
         <activity
             android:name=".ui.camera.ResultActivity"
             android:exported="false" />
         <activity
             android:name=".ui.camera.AnalysisActivity"
             android:exported="false" />
+
         <meta-data
             android:name="androidx.camera.lifecycle.CameraXConfig"
             android:value="androidx.camera.camera2.Camera2Config" />
