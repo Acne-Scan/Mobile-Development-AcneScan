@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -41,7 +40,7 @@ class CameraFragment : Fragment() {
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var historyViewModel: HistoryViewModel
-
+    private var isFrontCamera = true // Menandakan kamera yang aktif (depan atau belakang)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,13 +75,19 @@ class CameraFragment : Fragment() {
             takePhoto()
         }
 
+        // Set up tombol gallery
         binding.galleryButton.setOnClickListener {
             openGallery()
         }
 
+        // Set up tombol switch kamera
+        binding.switchCameraButton.setOnClickListener {
+            isFrontCamera = !isFrontCamera // Toggle kamera depan / belakang
+            startCamera() // Restart kamera dengan kamera yang baru dipilih
+        }
+
         // Inisialisasi executor kamera
         cameraExecutor = Executors.newSingleThreadExecutor()
-
     }
 
     private fun startCamera() {
@@ -90,6 +95,13 @@ class CameraFragment : Fragment() {
 
         cameraProviderFuture.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+
+            // Menentukan selector kamera berdasarkan status kamera depan/belakang
+            val cameraSelector = if (isFrontCamera) {
+                CameraSelector.DEFAULT_FRONT_CAMERA
+            } else {
+                CameraSelector.DEFAULT_BACK_CAMERA
+            }
 
             val preview = Preview.Builder()
                 .build()
@@ -99,11 +111,10 @@ class CameraFragment : Fragment() {
 
             imageCapture = ImageCapture.Builder().build()
 
-            val cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
-
             try {
                 cameraProvider.unbindAll()
 
+                // Bind use cases ke lifecycle
                 cameraProvider.bindToLifecycle(
                     this,
                     cameraSelector,
@@ -131,7 +142,7 @@ class CameraFragment : Fragment() {
             ContextCompat.getMainExecutor(requireContext()),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val savedUri = Uri.fromFile(photoFile)
+//                    val savedUri = Uri.fromFile(photoFile)
 
                     // Koreksi orientasi gambar
                     val correctedImagePath = correctImageOrientation(photoFile)
@@ -146,8 +157,11 @@ class CameraFragment : Fragment() {
 
                     // Kirim gambar ke AnalysisActivity dengan path baru
                     val intent = Intent(requireContext(), AnalysisActivity::class.java)
-                    intent.putExtra(AnalysisActivity.EXTRA_IMAGE_PATH, correctedImagePath)
+                    intent.putExtra(AnalysisActivity.EXTRA_IMAGE_PATH, correctedImagePath) // Path gambar yang sudah dikoreksi
+                    intent.putExtra(AnalysisActivity.EXTRA_CAMERA_FACING, isFrontCamera) // Mengirim status kamera depan/belakang
+
                     startActivity(intent)
+
                 }
 
                 override fun onError(exception: ImageCaptureException) {
@@ -158,14 +172,17 @@ class CameraFragment : Fragment() {
     }
 
     private fun correctImageOrientation(file: File): String {
+        // Decode gambar dari file
         val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-        val exif = ExifInterface(file.absolutePath)
 
+        // Membaca informasi orientasi EXIF
+        val exif = ExifInterface(file.absolutePath)
         val orientation = exif.getAttributeInt(
             ExifInterface.TAG_ORIENTATION,
             ExifInterface.ORIENTATION_UNDEFINED
         )
 
+        // Rotasi gambar berdasarkan orientasi EXIF dan apakah kamera depan atau belakang digunakan
         val rotatedBitmap = when (orientation) {
             ExifInterface.ORIENTATION_ROTATE_90 -> rotateBitmap(bitmap, 90f)
             ExifInterface.ORIENTATION_ROTATE_180 -> rotateBitmap(bitmap, 180f)
@@ -173,12 +190,20 @@ class CameraFragment : Fragment() {
             else -> bitmap
         }
 
-        // Simpan kembali bitmap yang sudah dikoreksi
-        val correctedFile = File(file.parent, "corrected_${file.name}")
-        FileOutputStream(correctedFile).use { outputStream ->
-            rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        // Jika gambar diproses menggunakan kamera depan, balik gambar secara horizontal
+        val finalBitmap = if (isFrontCamera) {
+            flipBitmapHorizontally(rotatedBitmap)
+        } else {
+            rotatedBitmap
         }
 
+        // Simpan gambar yang sudah diproses ke file baru
+        val correctedFile = File(file.parent, "corrected_${file.name}")
+        FileOutputStream(correctedFile).use { outputStream ->
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        }
+
+        // Mengembalikan path file yang sudah diperbaiki
         return correctedFile.absolutePath
     }
 
@@ -187,6 +212,13 @@ class CameraFragment : Fragment() {
         matrix.postRotate(degrees)
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
+
+    private fun flipBitmapHorizontally(bitmap: Bitmap): Bitmap {
+        val matrix = Matrix()
+        matrix.preScale(-1f, 1f) // Membalik gambar secara horizontal
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -214,7 +246,6 @@ class CameraFragment : Fragment() {
 
         Toast.makeText(requireContext(), "Image saved to history", Toast.LENGTH_SHORT).show()
     }
-
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(

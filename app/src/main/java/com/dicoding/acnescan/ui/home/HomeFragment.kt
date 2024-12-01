@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.dicoding.acnescan.databinding.FragmentHomeBinding
 import com.dicoding.acnescan.factory.ViewModelFactory
-import com.dicoding.acnescan.response.ResultState
-import com.dicoding.acnescan.adapter.ArticleAdapter
+import com.dicoding.acnescan.data.response.ResultState
+import com.dicoding.acnescan.data.adapter.ArticleAdapter
 
 class HomeFragment : Fragment() {
 

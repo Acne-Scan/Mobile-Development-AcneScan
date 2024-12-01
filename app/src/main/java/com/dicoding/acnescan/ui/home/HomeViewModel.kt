@@ -3,9 +3,9 @@ package com.dicoding.acnescan.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.acnescan.response.ArticleResponse
-import com.dicoding.acnescan.response.Repository
-import com.dicoding.acnescan.response.ResultState
+import com.dicoding.acnescan.data.response.ArticleResponse
+import com.dicoding.acnescan.data.response.Repository
+import com.dicoding.acnescan.data.response.ResultState
 
 class HomeViewModel(private val repository: Repository) : ViewModel() {
     private val _articles = MutableLiveData<ResultState<List<ArticleResponse>>>() // Menggunakan daftar Artikel
