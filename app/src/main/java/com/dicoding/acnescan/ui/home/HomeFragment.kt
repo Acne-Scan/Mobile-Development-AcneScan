@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.dicoding.acnescan.databinding.FragmentHomeBinding
-import com.dicoding.acnescan.factory.ViewModelFactory
-import com.dicoding.acnescan.data.response.ResultState
+import com.dicoding.acnescan.data.factory.ViewModelFactory
+import com.dicoding.acnescan.data.utils.ResultState
 import com.dicoding.acnescan.data.adapter.ArticleAdapter
 
 class HomeFragment : Fragment() {
@@ -49,6 +49,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun getDataArticles() {
+        homeViewModel.getArticles()
         homeViewModel.articles.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is ResultState.Loading -> {
@@ -66,7 +67,7 @@ class HomeFragment : Fragment() {
                         // Jika data ada, tampilkan carousel
                         binding.articleCarousel.visibility = View.VISIBLE
                         binding.emptyState.visibility = View.GONE
-//                        _articleAdapter.submitList(result.data)
+                        _articleAdapter.submitList(result.data)
                     }
                     Log.d("TAG", "getDataArticles: ${result.data}")
                 }

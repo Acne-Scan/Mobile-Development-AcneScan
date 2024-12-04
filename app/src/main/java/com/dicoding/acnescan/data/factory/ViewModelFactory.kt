@@ -1,9 +1,9 @@
-package com.dicoding.acnescan.factory
+package com.dicoding.acnescan.data.factory
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dicoding.acnescan.data.response.Repository
+import com.dicoding.acnescan.data.model.response.Repository
 import com.dicoding.acnescan.ui.home.HomeViewModel
 
 class ViewModelFactory (private val Repository : Repository) : ViewModelProvider.NewInstanceFactory() {

@@ -1,4 +1,4 @@
-package com.dicoding.acnescan.data.response
+package com.dicoding.acnescan.data.utils
 
 sealed class ResultState<out T> {
     object Loading : ResultState<Nothing>()

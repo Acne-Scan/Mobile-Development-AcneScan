@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dicoding.acnescan.databinding.ItemArticlesBinding
-import com.dicoding.acnescan.data.response.DataItem
+import com.dicoding.acnescan.data.model.response.DataItem
 
 class ArticleAdapter(private val onItemClicked: (DataItem) -> Unit): RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
 
@@ -36,12 +36,6 @@ class ArticleAdapter(private val onItemClicked: (DataItem) -> Unit): RecyclerVie
     }
 
     override fun getItemCount(): Int = articleList.size
-
-//    // Fungsi untuk memperbarui data jika dibutuhkan
-//    fun updateDataArticles(newArticles: List<ArticleItem>) {
-//        articleList = newArticles
-//        notifyDataSetChanged()
-//    }
 
     fun submitList(articles: List<DataItem>) {
         articleList = articles

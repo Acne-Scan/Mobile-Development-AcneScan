@@ -1,4 +1,4 @@
-package com.dicoding.acnescan.data.response
+package com.dicoding.acnescan.data.model.response
 
 import com.google.gson.annotations.SerializedName
 
@@ -28,4 +28,9 @@ data class PredictionItem(
 
 	@field:SerializedName("confidence")
 	val confidence: Float? = null // Kepercayaan untuk setiap prediksi
+)
+
+// Data class untuk format JSON
+data class ImageRequest(
+	val image: String // Gambar yang dikodekan dalam format base64
 )

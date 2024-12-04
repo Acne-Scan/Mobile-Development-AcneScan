@@ -1,16 +1,16 @@
-package com.dicoding.acnescan.data.response
+package com.dicoding.acnescan.data.model.response
 
 import com.google.gson.annotations.SerializedName
 
 data class ArticleResponse(
 
-    @field:SerializedName("code")
+	@field:SerializedName("code")
 	val code: Int,
 
-    @field:SerializedName("data")
+	@field:SerializedName("data")
 	val data: List<DataItem>,
 
-    @field:SerializedName("message")
+	@field:SerializedName("message")
 	val message: String
 )
 

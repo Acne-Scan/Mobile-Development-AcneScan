@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@color/lightgrey"
+    android:background="#2E4637"
     tools:context=".ui.camera.ResultActivity">
 
     <!-- ScrollView untuk memastikan tampilan bisa di-scroll -->
@@ -35,8 +35,8 @@
                 <ImageView
                     android:id="@+id/imageViewPlaceholder"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_height="300dp"
+                    android:layout_marginBottom="8dp"
                     android:contentDescription="@string/image_placeholder"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/pp_patrickk" />
@@ -62,19 +62,36 @@
                     android:gravity="center" />
 
                 <TextView
+                    android:id="@+id/recommendations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/recommendations"
+                    android:layout_marginTop="20dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/desc_recommendations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textSize="16sp"
+                    android:text="@string/desc_recommendations" />
+
+                <TextView
                     android:id="@+id/recommendationTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/rekomendasi_facial_wash"
+                    android:text="@string/recommended_products"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:layout_marginBottom="8dp"/>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_recommendation"
+                    android:id="@+id/recyclerViewProducts"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
@@ -88,6 +105,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/button_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

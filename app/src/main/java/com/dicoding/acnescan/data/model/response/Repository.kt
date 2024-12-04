@@ -1,22 +1,23 @@
-package com.dicoding.acnescan.data.response
+package com.dicoding.acnescan.data.model.response
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.dicoding.acnescan.data.retrofit.ApiService
+import com.dicoding.acnescan.data.model.retrofit.ApiService
+import com.dicoding.acnescan.data.utils.ResultState
 
 class Repository private constructor(private val apiService: ApiService) {
 
-    fun getArticles(): LiveData<ResultState<List<ArticleResponse>>> = liveData {
-        emit(ResultState.Loading) // Emit status loading
+    fun getArticles(): LiveData<ResultState<List<DataItem>>> = liveData {
+        emit(ResultState.Loading)
         try {
-            val response = apiService.getAllArticles() // Panggil API
-            if (response.isNotEmpty()) {
-                emit(ResultState.Success(response)) // Emit hasil jika sukses
+            val response = apiService.getAllArticles()
+            val articles = response.data
+            if (articles.isNotEmpty()) {
+                emit(ResultState.Success(articles))
             } else {
-                emit(ResultState.Error("No articles available")) // Emit error jika kosong
+                emit(ResultState.Error("No articles available"))
             }
         } catch (e: Exception) {
-            // Emit error dengan pesan yang lebih aman
             emit(ResultState.Error(e.localizedMessage ?: "An unknown error occurred"))
         }
     }

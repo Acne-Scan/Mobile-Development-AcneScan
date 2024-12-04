@@ -158,7 +158,6 @@ class CameraFragment : Fragment() {
                     // Kirim gambar ke AnalysisActivity dengan path baru
                     val intent = Intent(requireContext(), AnalysisActivity::class.java)
                     intent.putExtra(AnalysisActivity.EXTRA_IMAGE_PATH, correctedImagePath) // Path gambar yang sudah dikoreksi
-                    intent.putExtra(AnalysisActivity.EXTRA_CAMERA_FACING, isFrontCamera) // Mengirim status kamera depan/belakang
 
                     startActivity(intent)
 

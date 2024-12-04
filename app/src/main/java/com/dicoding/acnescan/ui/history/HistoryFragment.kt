@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -59,20 +58,17 @@ class HistoryFragment : Fragment() {
         // Tombol Hapus Semua
         binding.buttonDeleteAll.setOnClickListener {
             historyViewModel.deleteAllHistory()
-            Toast.makeText(requireContext(), "Semua data history telah dihapus.", Toast.LENGTH_SHORT).show()
         }
+    }
 
-        // Tombol Refresh
-        binding.buttonRefresh.setOnClickListener {
-            historyViewModel.refreshHistory()
-            Toast.makeText(requireContext(), "Data history diperbarui.", Toast.LENGTH_SHORT).show()
-        }
+    // Auto refresh setiap kali kembali ke fragment history
+    override fun onResume() {
+        super.onResume()
+        historyViewModel.refreshHistory()
+    }
 
-        // Observe error messages
-        historyViewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
-            errorMessage?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-            }
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
