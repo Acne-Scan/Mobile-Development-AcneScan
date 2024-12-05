@@ -3,6 +3,7 @@ package com.dicoding.acnescan.ui.camera
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,21 +47,46 @@ class ResultActivity : AppCompatActivity() {
         // Mendapatkan data produk (dari response server)
         val productImages = intent.getSerializableExtra(EXTRA_PRODUCT_IMAGES) as? Map<*, *>
 
-        // Jika produk gambar ditemukan, tampilkan di RecyclerView
-        if (productImages != null) {
-            val products = productImages.map { Product(it.key.toString(), it.value.toString()) }
-            setupProductRecyclerView(products)
+        // Mengambil Product Links sebagai Map<String, String>
+        val productLinks = intent.getSerializableExtra(EXTRA_PRODUCT_LINKS) as? Map<*, *>
+
+        // Log untuk memeriksa data yang diterima
+        Log.d("ResultActivity", "Product images: $productImages")
+        Log.d("ResultActivity", "Product Links: $productLinks")
+
+        // Proses data produk
+        if (productImages.isNullOrEmpty() || productLinks.isNullOrEmpty()) {
+            // Menampilkan pesan error jika tidak ada data yang diterima
+            Log.e("ResultActivity", "Product images or product links are empty")
+            Toast.makeText(this, "No products available", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "No products found", Toast.LENGTH_SHORT).show()
+            // Lanjutkan dengan memproses data
+            val products = productImages.mapNotNull { (productName, imageUrl) ->
+                val productUrl = productLinks[productName]
+                // Cek apakah productUrl ada, jika tidak kita abaikan produk ini
+                if (productUrl != null) {
+                    Product(productName.toString(), imageUrl.toString(), productUrl.toString())
+                } else {
+                    null
+                }
+            }
+
+            if (products.isNotEmpty()) {
+                setupProductRecyclerView(products)
+            } else {
+                Toast.makeText(this, "No valid products found", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // Tombol kembali untuk kembali ke activity sebelumnya
         binding.buttonBack.setOnClickListener {
             onBackPressed()
         }
+
     }
 
     private fun setupProductRecyclerView(products: List<Product>) {
+        // Setup RecyclerView dengan Adapter
         val adapter = ProductImageAdapter(products)
         binding.recyclerViewProducts.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewProducts.adapter = adapter
@@ -72,5 +98,6 @@ class ResultActivity : AppCompatActivity() {
         const val EXTRA_IMAGE_URI = "extra_image_uri"
         const val EXTRA_PRODUCT_IMAGES = "extra_product_images"
         const val EXTRA_DESC_RECOMMENDATIONS = "extra_desc_recommendations"
+        const val EXTRA_PRODUCT_LINKS = "extra_product_links"
     }
 }

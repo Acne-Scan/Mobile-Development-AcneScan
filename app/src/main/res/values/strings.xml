@@ -26,6 +26,7 @@
     <string name="title_gallery">Gallery</string>
     <string name="title_history">History</string>
     <string name="title_article">Articles</string>
+    <string name="title_products">Products</string>
 
     <string name="product_image">Product Image</string>
     <string name="navigate_arrow">Navigate to product details</string>
@@ -48,11 +49,15 @@
     <string name="search">Search…</string>
     <string name="recommended_products">Recommended Products</string>
     <string name="no_articles">No articles for now</string>
-    <string name="history_delete">Delete History</string>
+    <string name="history_delete">Delete All History</string>
     <string name="history_refresh">Refresh</string>
     <string name="image_placeholder">Image Placeholder</string>
     <string name="desc_article">descArticle</string>
     <string name="detail_skincare">Detail Skincare</string>
     <string name="recommendations">Recommendations</string>
     <string name="desc_recommendations">desc_recommendations</string>
+    <string name="title_menu">Menu</string>
+    <string name="title_toolbar">Toolbar</string>
+    <string name="camera_warning">Please bring your camera close to your face to take a picture!</string>
+    <string name="title_flip_camera">Flip Camera</string>
 </resources>

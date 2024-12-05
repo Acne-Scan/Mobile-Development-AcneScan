@@ -127,6 +127,7 @@ class AnalysisActivity : AppCompatActivity() {
                         val predictedClass = responseBody.prediction ?: "Unknown Type"
                         val confidence = responseBody.confidence?.toSafeFloat() ?: 0f // Menggunakan extension function
                         val recommendations = responseBody.recommendation ?: "No Recommendation"
+                        val productLinks = responseBody.productLinks ?: "No Product Links"
 
                         // Log hasil prediksi
                         Log.d("AnalysisActivity", "Predicted Class: $predictedClass, Confidence: $confidence")
@@ -136,7 +137,12 @@ class AnalysisActivity : AppCompatActivity() {
                         Toast.makeText(this@AnalysisActivity, resultMessage, Toast.LENGTH_LONG).show()
 
                         // Kirim hasil ke ResultActivity
-                        sendAnalysisResult(predictedClass, confidence, responseBody.productImages, recommendations)
+                        sendAnalysisResult(predictedClass,
+                            confidence,
+                            responseBody.productImages,
+                            recommendations,
+                            responseBody.productLinks
+                        )
 
                     } else {
                         // Jika response body kosong
@@ -178,7 +184,11 @@ class AnalysisActivity : AppCompatActivity() {
         return file
     }
 
-    private fun sendAnalysisResult(predictionType: String, confidenceScore: Float, productImages: Map<String, String>?, descRecommendation: String) {
+    private fun sendAnalysisResult(predictionType: String,
+                                   confidenceScore: Float,
+                                   productImages: Map<String, String>?,
+                                   descRecommendation: String,
+                                   productLinks: Map<String, String>?) {
         // Simpan gambar yang dikompresi ke file sementara
         val reducedImageFile = saveCompressedBitmapToFile(bitmapToAnalyze!!)
 
@@ -192,7 +202,8 @@ class AnalysisActivity : AppCompatActivity() {
             putExtra(ResultActivity.EXTRA_CONFIDENCE_SCORE, confidenceScore) // Mengirim skor
             putExtra(ResultActivity.EXTRA_IMAGE_URI, imageUri.toString()) // Mengirim URI file gambar
             putExtra(ResultActivity.EXTRA_PRODUCT_IMAGES, productImages?.let { HashMap(it) }) // Mengirimkan Map sebagai HashMap
-            putExtra(ResultActivity.EXTRA_DESC_RECOMMENDATIONS,descRecommendation) // Mengirim rekomendasi
+            putExtra(ResultActivity.EXTRA_DESC_RECOMMENDATIONS, descRecommendation) // Mengirim rekomendasi
+            putExtra(ResultActivity.EXTRA_PRODUCT_LINKS, productLinks?.let { HashMap(it) }) // Mengirim Link product
         }
         startActivity(intent)
     }

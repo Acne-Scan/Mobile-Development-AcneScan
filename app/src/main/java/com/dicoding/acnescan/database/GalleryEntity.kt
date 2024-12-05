@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity(tableName = "history_table")
-data class HistoryEntity (
+data class GalleryEntity (
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String,
     val description: String,

@@ -7,14 +7,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.acnescan.R
 import com.dicoding.acnescan.databinding.ItemHistoryBinding
-import com.dicoding.acnescan.database.HistoryEntity
+import com.dicoding.acnescan.database.GalleryEntity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.acnescan.data.utils.GlideRotationAndFlipTransformation
 import java.io.File
 
-class HistoryAdapter(private val onItemClick: (HistoryEntity) -> Unit) :
-    ListAdapter<HistoryEntity, HistoryAdapter.HistoryViewHolder>(DIFF_CALLBACK) {
+class GalleryAdapter(
+    private val onItemClick: (GalleryEntity) -> Unit,
+    private val onItemLongPress: (GalleryEntity) -> Unit
+) : ListAdapter<GalleryEntity, GalleryAdapter.HistoryViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         val binding = ItemHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -22,13 +24,14 @@ class HistoryAdapter(private val onItemClick: (HistoryEntity) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-        val getHistory = getItem(position)
-        holder.bind(getHistory, onItemClick)
+        val history = getItem(position)
+        holder.bind(history, onItemClick, onItemLongPress)
     }
 
     class HistoryViewHolder(private val binding: ItemHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(history: HistoryEntity, onItemClick: (HistoryEntity) -> Unit) {
-            // Konversi timestamp ke format menit
+
+        fun bind(history: GalleryEntity, onItemClick: (GalleryEntity) -> Unit, onItemLongPress: (GalleryEntity) -> Unit) {
+            // Konversi timestamp ke format relatif
             val formattedTime = getRelativeTime(history.timestamp)
             binding.historyTime.text = formattedTime
 
@@ -41,18 +44,24 @@ class HistoryAdapter(private val onItemClick: (HistoryEntity) -> Unit) :
                     .apply(RequestOptions().transform(GlideRotationAndFlipTransformation(imageFile))) // Apply rotation and flip transformation
                     .into(binding.historyIcon)
             } else {
-                binding.historyIcon.setImageResource(R.drawable.ic_notifications_black_24dp) // Placeholder jika file tidak ditemukan
+                binding.historyIcon.setImageResource(R.drawable.ic_notification)
             }
 
+            // Klik biasa untuk melihat gambar lebih lanjut
             binding.root.setOnClickListener {
                 onItemClick(history)
             }
+
+            // Long click untuk menghapus history
+            binding.root.setOnLongClickListener {
+                onItemLongPress(history)
+                true // Return harus true jika menggunakan long click listener
+            }
         }
 
-        //Fungsi untuk menghitung waktu relatif dari timestamp.
+        // Fungsi untuk menghitung waktu relatif dari timestamp.
         private fun getRelativeTime(timestamp: String): String {
             return try {
-                // Konversi string timestamp ke format long
                 val timeMillis = timestamp.toLong()
                 val now = System.currentTimeMillis()
 
@@ -60,24 +69,24 @@ class HistoryAdapter(private val onItemClick: (HistoryEntity) -> Unit) :
                 val minutes = difference / (1000 * 60)
 
                 when {
-                    minutes < 1 -> "Baru saja"
-                    minutes < 60 -> "$minutes menit yang lalu"
-                    minutes < 1440 -> "${minutes / 60} jam yang lalu"
-                    else -> "${minutes / 1440} hari yang lalu"
+                    minutes < 1 -> "Now"
+                    minutes < 60 -> "$minutes minutes ago"
+                    minutes < 1440 -> "${minutes / 60} hours ago"
+                    else -> "${minutes / 1440} days ago"
                 }
             } catch (e: Exception) {
-                "Waktu tidak valid"
+                "Times not valid"
             }
         }
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<HistoryEntity>() {
-            override fun areItemsTheSame(oldItem: HistoryEntity, newItem: HistoryEntity): Boolean {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<GalleryEntity>() {
+            override fun areItemsTheSame(oldItem: GalleryEntity, newItem: GalleryEntity): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: HistoryEntity, newItem: HistoryEntity): Boolean {
+            override fun areContentsTheSame(oldItem: GalleryEntity, newItem: GalleryEntity): Boolean {
                 return oldItem == newItem
             }
         }

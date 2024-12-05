@@ -12,20 +12,15 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_rekomendasi"
-        android:name="com.dicoding.acnescan.ui.rekomendasi.RekomendasiFragment"
-        android:label="@string/title_recommendation"
-        tools:layout="@layout/fragment_rekomendasi" />
+        android:id="@+id/navigation_product"
+        android:name="com.dicoding.acnescan.ui.products.ProductsFragment"
+        android:label="@string/title_products"
+        tools:layout="@layout/fragment_products" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.dicoding.acnescan.ui.history.HistoryFragment"
-        android:label="@string/title_history"
-        tools:layout="@layout/fragment_history" />
+        android:id="@+id/navigation_local_gallery"
+        android:name="com.dicoding.acnescan.ui.gallery.GalleryFragment"
+        android:label="@string/title_gallery"
+        tools:layout="@layout/fragment_gallery" />
 
-    <fragment
-        android:id="@+id/navigation_camera"
-        android:name="com.dicoding.acnescan.ui.camera.CameraFragment"
-        android:label="@string/title_camera"
-        tools:layout="@layout/fragment_camera" />
 </navigation>

@@ -1,5 +1,8 @@
 package com.dicoding.acnescan.ui.camera
 
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +24,14 @@ class ProductImageAdapter(private val productList: List<Product>) :
             Glide.with(binding.productImage.context)
                 .load(product.imageUrl)
                 .into(binding.productImage)
+
+            binding.root.setOnClickListener {
+                // Intent untuk membuka URL produk di browser
+                Log.d("ProductAdapter", "Opening link for: ${product.name}, URL: ${product.productUrl}")
+
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(product.productUrl))
+                binding.root.context.startActivity(intent)
+            }
         }
     }
 

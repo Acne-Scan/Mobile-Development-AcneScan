@@ -7,19 +7,24 @@
     android:layout_height="match_parent"
     android:background="#2E4637"
     android:fitsSystemWindows="true"
-    tools:context=".ui.camera.CameraFragment">
+    tools:context=".ui.camera.CameraActivity">
 
     <!-- Camera Preview -->
     <androidx.camera.view.PreviewView
         android:id="@+id/view_finder"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
         android:layout_margin="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/capture_button"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/tv_warning"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.236" />
 
     <!-- Capture Button -->
     <ImageButton
@@ -58,11 +63,28 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="28dp"
         android:background="@drawable/bg_button_round"
-        android:contentDescription="@string/title_gallery"
+        android:contentDescription="@string/title_flip_camera"
         android:src="@drawable/ic_flip_camera_android"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/capture_button" />
+
+    <!-- Warning   -->
+    <TextView
+        android:id="@+id/tv_warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="@string/camera_warning"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/capture_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_finder" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

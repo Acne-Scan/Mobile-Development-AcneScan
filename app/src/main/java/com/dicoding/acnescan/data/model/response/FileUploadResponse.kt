@@ -19,7 +19,10 @@ data class FileUploadResponse(
 	val productImages: Map<String, String>? = null, // Gambar produk yang terkait dengan prediksi
 
 	@field:SerializedName("all_predictions")
-	val allPredictions: List<PredictionItem>? = null // Daftar prediksi lain yang dilakukan oleh model
+	val allPredictions: List<PredictionItem>? = null, // Daftar prediksi lain yang dilakukan oleh model
+
+	@field:SerializedName("product_links")
+	val productLinks: Map<String, String>? = null // Link produk yang terkait dengan prediksi
 )
 
 data class PredictionItem(
@@ -28,9 +31,4 @@ data class PredictionItem(
 
 	@field:SerializedName("confidence")
 	val confidence: Float? = null // Kepercayaan untuk setiap prediksi
-)
-
-// Data class untuk format JSON
-data class ImageRequest(
-	val image: String // Gambar yang dikodekan dalam format base64
 )

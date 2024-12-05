@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightgrey"
-    tools:context=".ui.rekomendasi.RekomendasiFragment">
+    tools:context=".ui.products.ProductsFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/header_section"

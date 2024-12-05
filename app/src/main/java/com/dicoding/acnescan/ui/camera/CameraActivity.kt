@@ -7,12 +7,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
@@ -22,49 +21,36 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.dicoding.acnescan.database.HistoryEntity
-import com.dicoding.acnescan.databinding.FragmentCameraBinding
-import com.dicoding.acnescan.ui.history.HistoryViewModel
+import com.dicoding.acnescan.database.GalleryEntity
+import com.dicoding.acnescan.databinding.ActivityCameraBinding
+import com.dicoding.acnescan.ui.gallery.GalleryViewModel
 import java.io.File
 import java.io.FileOutputStream
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class CameraFragment : Fragment() {
+class CameraActivity : AppCompatActivity() {
 
-    private var _binding: FragmentCameraBinding? = null
-    private val binding get() = _binding!!
-
+    private lateinit var binding: ActivityCameraBinding
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
-    private lateinit var historyViewModel: HistoryViewModel
+    private lateinit var galleryViewModel: GalleryViewModel
     private var isFrontCamera = true // Menandakan kamera yang aktif (depan atau belakang)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentCameraBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityCameraBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Inisialisasi ViewModel
-        historyViewModel = ViewModelProvider(
-            requireActivity(),
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[HistoryViewModel::class.java]
+        galleryViewModel = GalleryViewModel(application) // Perlu inisialisasi ViewModel sesuai kebutuhan
 
         // Memastikan permission kamera
         if (allPermissionsGranted()) {
             startCamera()
         } else {
             ActivityCompat.requestPermissions(
-                requireActivity(),
+                this,
                 REQUIRED_PERMISSIONS,
                 REQUEST_CODE_PERMISSIONS
             )
@@ -91,7 +77,7 @@ class CameraFragment : Fragment() {
     }
 
     private fun startCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
         cameraProviderFuture.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
@@ -106,7 +92,7 @@ class CameraFragment : Fragment() {
             val preview = Preview.Builder()
                 .build()
                 .also {
-                    it.surfaceProvider = binding.viewFinder.surfaceProvider
+                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
                 }
 
             imageCapture = ImageCapture.Builder().build()
@@ -124,14 +110,14 @@ class CameraFragment : Fragment() {
             } catch (exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
-        }, ContextCompat.getMainExecutor(requireContext()))
+        }, ContextCompat.getMainExecutor(this))
     }
 
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
 
         val photoFile = File(
-            requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+            getExternalFilesDir(Environment.DIRECTORY_PICTURES),
             "photo_${System.currentTimeMillis()}.jpg"
         )
 
@@ -139,11 +125,9 @@ class CameraFragment : Fragment() {
 
         imageCapture.takePicture(
             outputOptions,
-            ContextCompat.getMainExecutor(requireContext()),
+            ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-//                    val savedUri = Uri.fromFile(photoFile)
-
                     // Koreksi orientasi gambar
                     val correctedImagePath = correctImageOrientation(photoFile)
 
@@ -156,11 +140,10 @@ class CameraFragment : Fragment() {
                     )
 
                     // Kirim gambar ke AnalysisActivity dengan path baru
-                    val intent = Intent(requireContext(), AnalysisActivity::class.java)
+                    val intent = Intent(this@CameraActivity, AnalysisActivity::class.java)
                     intent.putExtra(AnalysisActivity.EXTRA_IMAGE_PATH, correctedImagePath) // Path gambar yang sudah dikoreksi
 
                     startActivity(intent)
-
                 }
 
                 override fun onError(exception: ImageCaptureException) {
@@ -218,22 +201,8 @@ class CameraFragment : Fragment() {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_GALLERY && resultCode == AppCompatActivity.RESULT_OK) {
-            val imageUri = data?.data
-            if (imageUri != null) {
-                // Kirim URI gambar ke AnalysisActivity
-                val intent = Intent(requireContext(), AnalysisActivity::class.java)
-                intent.putExtra(AnalysisActivity.EXTRA_IMAGE_URI, imageUri.toString())
-                startActivity(intent)
-            }
-        }
-    }
-
     private fun saveToDatabase(title: String, description: String, timestamp: String, imagePath: String) {
-        val historyEntity = HistoryEntity(
+        val galleryEntity = GalleryEntity(
             title = title,
             description = description,
             timestamp = timestamp,
@@ -241,14 +210,14 @@ class CameraFragment : Fragment() {
         )
 
         // Gunakan ViewModel untuk menyimpan data
-        historyViewModel.insert(historyEntity)
+        galleryViewModel.insert(galleryEntity)
 
-        Toast.makeText(requireContext(), "Image saved to history", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Image saved to history", Toast.LENGTH_SHORT).show()
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
-            requireContext(), it
+            this, it
         ) == PackageManager.PERMISSION_GRANTED
     }
 
@@ -267,7 +236,7 @@ class CameraFragment : Fragment() {
             } else {
                 // Jika izin ditolak, tampilkan pesan
                 Toast.makeText(
-                    requireContext(),
+                    this,
                     "Permission denied. Camera cannot be used.",
                     Toast.LENGTH_SHORT
                 ).show()
@@ -275,20 +244,31 @@ class CameraFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun onDestroy() {
+        super.onDestroy()
         cameraExecutor.shutdown()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_GALLERY) {
+            val imageUri: Uri? = data?.data
+            imageUri?.let {
+                // Kirim URI ke AnalysisActivity
+                val intent = Intent(this, AnalysisActivity::class.java)
+                intent.putExtra(AnalysisActivity.EXTRA_IMAGE_URI, it.toString())
+                startActivity(intent)
+            }
+        }
+    }
+
     private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, REQUEST_CODE_GALLERY)
     }
 
     companion object {
-        private const val TAG = "CameraFragment"
+        private const val TAG = "CameraActivity"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private const val REQUEST_CODE_GALLERY = 20
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)

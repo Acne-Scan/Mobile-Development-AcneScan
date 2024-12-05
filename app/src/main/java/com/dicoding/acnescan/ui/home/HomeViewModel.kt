@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dicoding.acnescan.data.model.response.DataItem
-import com.dicoding.acnescan.data.model.response.Repository
+import com.dicoding.acnescan.data.factory.Repository
 import com.dicoding.acnescan.data.utils.ResultState
 
 class HomeViewModel(private val repository: Repository) : ViewModel() {

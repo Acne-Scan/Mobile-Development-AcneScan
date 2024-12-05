@@ -50,7 +50,7 @@ object ApiConfigML {
 
         // Membuat Retrofit instance dengan OkHttpClient yang telah disesuaikan
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://acnescan-1018654955885.asia-southeast1.run.app/") // Base URL untuk API
+            .baseUrl("https://acne-scan-v2-1018654955885.us-central1.run.app") // Base URL untuk API
             .addConverterFactory(GsonConverterFactory.create()) // Untuk konversi JSON ke objek Kotlin
             .client(client) // Menggunakan OkHttpClient yang telah dikonfigurasi
             .build()
