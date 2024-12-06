@@ -4,26 +4,25 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_home" />
+        android:title="@string/title_home"
+        android:textSize="16sp"/>
 
     <item
-        android:id="@+id/navigation_rekomendasi"
+        android:id="@+id/navigation_products"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_recommendation" />
+        android:title="@string/title_products"
+        android:textSize="16sp"/>
 
     <item
-        android:id="@+id/navigation_camera"
-        android:icon="@drawable/ic_kamera"
-        android:title="@string/title_camera" />
-
-    <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_history"
-        android:title="@string/title_history" />
+        android:id="@+id/navigation_local_gallery"
+        android:icon="@drawable/ic_local_gallery"
+        android:title="@string/title_gallery"
+        android:textSize="16sp"/>
 
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_person"
-        android:title="@string/title_profile" />
+        android:title="@string/title_profile"
+        android:textSize="16sp"/>
 
 </menu>

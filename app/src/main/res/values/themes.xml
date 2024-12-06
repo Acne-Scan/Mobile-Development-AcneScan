@@ -1,15 +1,34 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base theme for the app -->
     <style name="Base.Theme.AcneScan" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">#2E4637</item> <!-- Warna untuk AppBar -->
-        <item name="colorPrimaryVariant">#24362A</item>
-        <item name="colorOnPrimary">#FFFFFF</item> <!-- Warna teks pada AppBar -->
+        <item name="colorPrimary">@color/primary_dark</item> <!-- Warna untuk AppBar -->
+        <item name="colorPrimaryVariant">@color/primary_variant</item>
+        <item name="colorOnPrimary">@color/white</item> <!-- Warna teks pada AppBar -->
+
+        <!-- Tema untuk BottomNavigationView -->
+        <item name="bottomNavigationStyle">@style/CustomBottomNavigationStyle</item>
     </style>
 
+    <!-- Style untuk BottomNavigationView -->
+    <style name="CustomBottomNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <!-- Warna aktif untuk ikon dan teks -->
+        <item name="itemIconTint">@color/primary_dark</item>
+        <item name="itemTextColor">@color/primary_dark</item>
+        <item name="itemIconSize">26dp</item>
+    </style>
+
+    <!-- Style untuk Toolbar -->
+    <style name="ToolbarTitleTextStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <!-- Splash Screen Theme -->
     <style name="Theme.Splash" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_new</item>
     </style>
 
+    <!-- No Action Bar Theme -->
     <style name="Theme.Acnescan.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>

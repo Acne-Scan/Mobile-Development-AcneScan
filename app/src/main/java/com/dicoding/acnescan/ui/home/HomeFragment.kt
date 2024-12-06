@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.dicoding.acnescan.databinding.FragmentHomeBinding
-import com.dicoding.acnescan.factory.ViewModelFactory
-import com.dicoding.acnescan.data.response.ResultState
-import com.dicoding.acnescan.data.adapter.ArticleAdapter
+import com.dicoding.acnescan.data.factory.ViewModelFactory
+import com.dicoding.acnescan.data.utils.ResultState
+import com.dicoding.acnescan.data.adapter.home.ArticleAdapter
+import com.dicoding.acnescan.data.adapter.home.ProductAdapter
+import com.dicoding.acnescan.ui.BottomNavigation
 
 class HomeFragment : Fragment() {
 
@@ -18,6 +20,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var _articleAdapter: ArticleAdapter // Adapter untuk Article
+    private lateinit var _productAdapter: ProductAdapter // Adapter untuk Product
 
     private val homeViewModel by viewModels<HomeViewModel> {
         ViewModelFactory.getInstance(requireActivity())
@@ -40,47 +43,111 @@ class HomeFragment : Fragment() {
             // Handle klik item
             Log.d("ArticleAdapter", "Clicked item: ${dataItem.name}")
         }
+        _productAdapter = ProductAdapter { dataItem ->
+            // Handle klik item
+            Log.d("ProductAdapter", "Clicked item: ${dataItem.image}")
+        }
 
         // Set adapter ke RecyclerView
         binding.articleCarousel.adapter = _articleAdapter
+        binding.productCarousel.adapter = _productAdapter
 
         // Observasi data dari ViewModel
         getDataArticles()
+        getDataProducts()
+
     }
 
     private fun getDataArticles() {
+        homeViewModel.getArticles()
         homeViewModel.articles.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is ResultState.Loading -> {
+                    binding.articleTitle.visibility = View.GONE
                     binding.progressBar.visibility = View.VISIBLE
-                    binding.articleCarousel.visibility = View.GONE // Sembunyikan carousel saat loading
+                    binding.productCarousel.visibility = View.GONE // Sembunyikan carousel saat loading
                     binding.emptyState.visibility = View.GONE // Sembunyikan empty state
                 }
                 is ResultState.Success -> {
                     binding.progressBar.visibility = View.GONE
-                    if (result.data.isNullOrEmpty()) {
+                    if (result.data.isEmpty()) {
                         // Jika data kosong, tampilkan empty state
-                        binding.articleCarousel.visibility = View.GONE
+                        binding.articleTitle.visibility = View.GONE
+                        binding.productCarousel.visibility = View.GONE
                         binding.emptyState.visibility = View.VISIBLE
                     } else {
                         // Jika data ada, tampilkan carousel
-                        binding.articleCarousel.visibility = View.VISIBLE
+                        binding.articleTitle.visibility = View.VISIBLE
+                        binding.productCarousel.visibility = View.VISIBLE
                         binding.emptyState.visibility = View.GONE
-//                        _articleAdapter.submitList(result.data)
+                        _articleAdapter.submitList(result.data)
                     }
-                    Log.d("TAG", "getDataArticles: ${result.data}")
+                    Log.d("HomeFragment", "getDataProducts: ${result.data}")
                 }
                 is ResultState.Error -> {
+                    binding.articleTitle.visibility = View.GONE
                     binding.progressBar.visibility = View.GONE
-                    binding.articleCarousel.visibility = View.GONE
-                    binding.emptyState.visibility = View.VISIBLE // Tampilkan empty state saat error
+                    binding.productCarousel.visibility = View.GONE
+                    binding.emptyState.visibility = View.VISIBLE// Tampilkan empty state saat error
                     // Anda juga bisa menampilkan pesan error kepada pengguna
-                    Log.e("TAG", "Error loading articles: ${result.message}")
+                    Log.e("HomeFragment", "Error loading products: ${result.message}")
                 }
             }
         }
     }
 
+    private fun getDataProducts() {
+        homeViewModel.getProducts()
+        homeViewModel.products.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is ResultState.Loading -> {
+                    binding.productTitle.visibility = View.GONE
+                    binding.progressBar.visibility = View.VISIBLE
+                    binding.productCarousel.visibility = View.GONE // Sembunyikan carousel saat loading
+                    binding.emptyState.visibility = View.GONE // Sembunyikan empty state
+                }
+                is ResultState.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                    if (result.data.isEmpty()) {
+                        // Jika data kosong, tampilkan empty state
+                        binding.productTitle.visibility = View.GONE
+                        binding.productCarousel.visibility = View.GONE
+                        binding.emptyState.visibility = View.VISIBLE
+                    } else {
+                        // Jika data ada, tampilkan carousel
+                        binding.productTitle.visibility = View.VISIBLE
+                        binding.productCarousel.visibility = View.VISIBLE
+                        binding.emptyState.visibility = View.GONE
+                        _productAdapter.submitList(result.data)
+                    }
+                    Log.d("HomeFragment", "getDataProducts: ${result.data}")
+                }
+                is ResultState.Error -> {
+                    binding.productTitle.visibility = View.GONE
+                    binding.progressBar.visibility = View.GONE
+                    binding.productCarousel.visibility = View.GONE
+                    binding.emptyState.visibility = View.VISIBLE// Tampilkan empty state saat error
+                    // Anda juga bisa menampilkan pesan error kepada pengguna
+                    Log.e("HomeFragment", "Error loading products: ${result.message}")
+                }
+            }
+        }
+    }
 
+    override fun onResume() {
+        super.onResume()
+        // Menonaktifkan swipe untuk ViewPager2 utama di activity/fragment induk
+        (activity as? BottomNavigation)?.binding?.navHostFragmentActivityBottomNav?.isUserInputEnabled = false
+    }
 
+    override fun onPause() {
+        super.onPause()
+        // Mengaktifkan kembali swipe untuk ViewPager2 utama
+        (activity as? BottomNavigation)?.binding?.navHostFragmentActivityBottomNav?.isUserInputEnabled = true
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

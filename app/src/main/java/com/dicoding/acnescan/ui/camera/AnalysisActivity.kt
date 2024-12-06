@@ -3,15 +3,13 @@ package com.dicoding.acnescan.ui.camera
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.exifinterface.media.ExifInterface
-import com.dicoding.acnescan.data.retrofit.ApiConfigML
-import com.dicoding.acnescan.data.retrofit.ImageRequest
+import com.dicoding.acnescan.data.model.response.ImageRequest
+import com.dicoding.acnescan.data.model.retrofit.ApiConfigML
 import com.dicoding.acnescan.databinding.ActivityAnalysisBinding
 import com.dicoding.acnescan.data.utils.convertImageToBase64
 import com.dicoding.acnescan.data.utils.createCustomTempFile
@@ -22,8 +20,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.net.SocketTimeoutException
 
@@ -47,20 +45,30 @@ class AnalysisActivity : AppCompatActivity() {
             // Gambar dari CameraFragment atau HistoryFragment (path)
             val imageFile = File(imagePath)
             if (imageFile.exists()) {
-                val bitmap = correctImageOrientation(imageFile)
+                // Mengurangi ukuran gambar
+                val reducedImageFile = imageFile.reduceFileImage()
+
+                // Kemudian, Anda dapat memproses file gambar yang lebih kecil ini
+                val bitmap = BitmapFactory.decodeFile(reducedImageFile.path)
                 bitmapToAnalyze = bitmap
                 binding.imageView.setImageBitmap(bitmap)
             } else {
                 Toast.makeText(this, "Image file not found", Toast.LENGTH_SHORT).show()
             }
         } else if (imageUri != null) {
-            // Gambar dari galeri
-            val uri = Uri.parse(imageUri)
-            val imageFile = uriToFile(uri, this).reduceFileImage()  // Menggunakan fungsi di FileUtils
-            bitmapToAnalyze = BitmapFactory.decodeFile(imageFile.absolutePath)
-            binding.imageView.setImageBitmap(bitmapToAnalyze)
-        } else {
-            Toast.makeText(this, "No image provided", Toast.LENGTH_SHORT).show()
+            // Gambar dari galeri (URI)
+            val imageFile = uriToFile(Uri.parse(imageUri), this) // Mengonversi URI menjadi file
+            if (imageFile.exists()) {
+                // Mengurangi ukuran gambar
+                val reducedImageFile = imageFile.reduceFileImage()
+
+                // Membaca gambar dengan ukuran yang sudah diperkecil
+                val bitmap = BitmapFactory.decodeFile(reducedImageFile.path)
+                bitmapToAnalyze = bitmap
+                binding.imageView.setImageBitmap(bitmap)
+            } else {
+                Toast.makeText(this, "Image not found", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // Tombol analisis
@@ -78,34 +86,6 @@ class AnalysisActivity : AppCompatActivity() {
         binding.buttonBack.setOnClickListener {
             finish()
         }
-    }
-
-    private fun correctImageOrientation(imageFile: File): Bitmap {
-        val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
-        val exif = ExifInterface(imageFile)
-        val isFrontCamera = intent.getBooleanExtra(EXTRA_CAMERA_FACING, true)
-
-        // Mendapatkan orientasi EXIF
-        val orientation = exif.getAttributeInt(
-            ExifInterface.TAG_ORIENTATION,
-            ExifInterface.ORIENTATION_UNDEFINED
-        )
-
-        // Melakukan rotasi berdasarkan orientasi EXIF
-        val rotatedBitmap = when (orientation) {
-            ExifInterface.ORIENTATION_ROTATE_90 -> rotateBitmap(bitmap, 90f)
-            ExifInterface.ORIENTATION_ROTATE_180 -> rotateBitmap(bitmap, 180f)
-            ExifInterface.ORIENTATION_ROTATE_270 -> rotateBitmap(bitmap, 270f)
-            else -> bitmap
-        }
-
-        return rotatedBitmap
-    }
-
-    private fun rotateBitmap(bitmap: Bitmap, degrees: Float): Bitmap {
-        val matrix = Matrix()
-        matrix.postRotate(degrees)
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
     // Fungsi untuk menganalisis gambar setelah di-upload
@@ -127,7 +107,7 @@ class AnalysisActivity : AppCompatActivity() {
         val imageRequest = ImageRequest(base64Image)
 
         // Menyiapkan request body dengan ImageRequest
-        val apiService = ApiConfigML.getApiService()
+        val apiService = ApiConfigML.getApiServiceML()
 
         // Menjalankan proses analisis di dalam coroutine
         GlobalScope.launch(Dispatchers.Main) {
@@ -143,9 +123,11 @@ class AnalysisActivity : AppCompatActivity() {
                     Log.d("AnalysisActivity", "Server response: SUCCESS")
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        // Menangani response yang valid
-                        val predictedClass = responseBody.prediction ?: "Unknown"
+                        // Menangani response dari server yang valid
+                        val predictedClass = responseBody.prediction ?: "Unknown Type"
                         val confidence = responseBody.confidence?.toSafeFloat() ?: 0f // Menggunakan extension function
+                        val recommendations = responseBody.recommendation ?: "No Recommendation"
+                        val productLinks = responseBody.productLinks ?: "No Product Links"
 
                         // Log hasil prediksi
                         Log.d("AnalysisActivity", "Predicted Class: $predictedClass, Confidence: $confidence")
@@ -155,7 +137,13 @@ class AnalysisActivity : AppCompatActivity() {
                         Toast.makeText(this@AnalysisActivity, resultMessage, Toast.LENGTH_LONG).show()
 
                         // Kirim hasil ke ResultActivity
-                        sendAnalysisResult(predictedClass, confidence)
+                        sendAnalysisResult(predictedClass,
+                            confidence,
+                            responseBody.productImages,
+                            recommendations,
+                            responseBody.productLinks
+                        )
+
                     } else {
                         // Jika response body kosong
                         Log.e("AnalysisActivity", "Error: Server returned an empty response body.")
@@ -187,28 +175,40 @@ class AnalysisActivity : AppCompatActivity() {
         }
     }
 
-    private fun compressBitmapToByteArray(bitmap: Bitmap): ByteArray {
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream) // Kompresi ke JPEG dengan kualitas 80
-        return byteArrayOutputStream.toByteArray()
+    private fun saveCompressedBitmapToFile(bitmap: Bitmap): File {
+        val file = File(cacheDir, "compressed_image.jpg") // Menyimpan di direktori cache aplikasi
+        val fileOutputStream = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fileOutputStream) // Kompresi gambar dengan kualitas 80
+        fileOutputStream.flush()
+        fileOutputStream.close()
+        return file
     }
 
-    private fun sendAnalysisResult(predictionType: String, confidenceScore: Float) {
-        // Mengompresi gambar menjadi ByteArray
-        val byteArray = compressBitmapToByteArray(bitmapToAnalyze!!)
+    private fun sendAnalysisResult(predictionType: String,
+                                   confidenceScore: Float,
+                                   productImages: Map<String, String>?,
+                                   descRecommendation: String,
+                                   productLinks: Map<String, String>?) {
+        // Simpan gambar yang dikompresi ke file sementara
+        val reducedImageFile = saveCompressedBitmapToFile(bitmapToAnalyze!!)
+
+        // Mengambil URI file gambar
+        val imageUri = Uri.fromFile(reducedImageFile)
+
 
         // Membuat intent untuk ResultActivity
         val intent = Intent(this, ResultActivity::class.java).apply {
-            putExtra(ResultActivity.EXTRA_PREDICTION_TYPE, predictionType)
-            putExtra(ResultActivity.EXTRA_CONFIDENCE_SCORE, confidenceScore)
-            putExtra(ResultActivity.EXTRA_IMAGE, byteArray) // Mengirim gambar sebagai ByteArray
+            putExtra(ResultActivity.EXTRA_PREDICTION_TYPE, predictionType) // Mengirim Tipe
+            putExtra(ResultActivity.EXTRA_CONFIDENCE_SCORE, confidenceScore) // Mengirim skor
+            putExtra(ResultActivity.EXTRA_IMAGE_URI, imageUri.toString()) // Mengirim URI file gambar
+            putExtra(ResultActivity.EXTRA_PRODUCT_IMAGES, productImages?.let { HashMap(it) }) // Mengirimkan Map sebagai HashMap
+            putExtra(ResultActivity.EXTRA_DESC_RECOMMENDATIONS, descRecommendation) // Mengirim rekomendasi
+            putExtra(ResultActivity.EXTRA_PRODUCT_LINKS, productLinks?.let { HashMap(it) }) // Mengirim Link product
         }
         startActivity(intent)
     }
-
     companion object {
         const val EXTRA_IMAGE_PATH = "extra_image_path"
         const val EXTRA_IMAGE_URI = "extra_image_uri"
-        const val EXTRA_CAMERA_FACING = "extra_camera_facing"
     }
 }

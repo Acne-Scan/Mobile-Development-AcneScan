@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AcneScan</string>
     <string name="JudulApk">AcneScan</string>
-    <string name="masuk_tanpa_login">Masuk Ke Dalam Aplikasi</string>
+    <string name="masuk_tanpa_login">Tap to Enter</string>
     <string name="masuk_dengan_google">Masuk dengan Google</string>
     <string name="masuk_dengan_email">Masuk dengan Email</string>
     <string name="belum_punya_akun_daftar">Belum punya akun? Daftar</string>
@@ -14,7 +14,7 @@
     <string name="saya_setuju_dengan_ketentuan_layanan_dan_kebijakan_privasi_acnescan">Saya setuju dengan Ketentuan Layanan dan Kebijakan Privasi AcneScan.</string>
     <string name="daftar">Daftar</string>
     <string name="sudah_punya_akun_masuk">Sudah punya akun? Masuk</string>
-    <string name="Introduction">Selamat datang di AcneScan, aplikasi untuk menganalisa kondisi kulit Anda.</string>
+    <string name="Introduction">Welcome to AcneScan, an app to analyze your face and giving a recommendation products</string>
 
     <string name="title_activity_bottom_nav">bottom_nav</string>
     <string name="title_home">Home</string>
@@ -25,6 +25,8 @@
     <string name="title_profile">Profile</string>
     <string name="title_gallery">Gallery</string>
     <string name="title_history">History</string>
+    <string name="title_article">Articles</string>
+    <string name="title_products">Products</string>
 
     <string name="product_image">Product Image</string>
     <string name="navigate_arrow">Navigate to product details</string>
@@ -38,18 +40,24 @@
     <string name="button_analyze">Analyze</string>
     <string name="tipe_jerawat">Tipe Jerawat</string>
     <string name="confidence_score">Confidence Score: 90%</string>
-    <string name="history_data_kosong">Tidak ada riwayat untuk ditampilkan.</string>
-    <string name="history_scan">Kamu sudah Scanning Wajah!</string>
-    <string name="history_detail">Ketuk untuk melihat!</string>
+    <string name="history_data_kosong">No history to be shown</string>
+    <string name="history_scan">Photo taken!</string>
+    <string name="history_detail">Tap to see details!</string>
     <string name="history_timestamp">11 Menit</string>
     <string name="recommendation_image">Recommendation Image</string>
     <string name="product_name">Product Name</string>
-    <string name="product_category">Category</string>
     <string name="search">Search…</string>
-    <string name="rekomendasi_facial_wash">Rekomendasi Facial Wash</string>
-    <string name="artikel">Artikel</string>
-    <string name="belum_ada_artikel_yang_tersedia_saat_ini">Belum ada artikel yang tersedia saat ini.</string>
-    <string name="history_delete">Hapus Semua History</string>
+    <string name="recommended_products">Recommended Products</string>
+    <string name="empty_state">No data for now</string>
+    <string name="history_delete">Delete All History</string>
     <string name="history_refresh">Refresh</string>
     <string name="image_placeholder">Image Placeholder</string>
+    <string name="desc_article">descArticle</string>
+    <string name="detail_skincare">Detail Skincare</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="desc_recommendations">desc_recommendations</string>
+    <string name="title_menu">Menu</string>
+    <string name="title_toolbar">Toolbar</string>
+    <string name="camera_warning">Please bring your camera close to your face to take a picture!</string>
+    <string name="title_flip_camera">Flip Camera</string>
 </resources>

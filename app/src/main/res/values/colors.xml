@@ -3,12 +3,14 @@
     <!-- Primary Colors -->
     <color name="primary">#365545</color> <!-- Primary background color -->
     <color name="primary_dark">#2E4637</color> <!-- Darker shade of primary -->
+    <color name="primary_variant">#24362A</color> <!-- Slightly darker shade of primary -->"
 
     <!-- Neutral Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#FFCCCCCC</color> <!-- Light gray for borders and accents -->
     <color name="lightgrey">#F2F6FF</color>
+    <color name="red">#F44336</color>
 
     <!-- Accent Colors -->
     <color name="accent">#81C784</color> <!-- Complementary green accent -->
