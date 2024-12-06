@@ -48,7 +48,7 @@
     <string name="product_name">Product Name</string>
     <string name="search">Search…</string>
     <string name="recommended_products">Recommended Products</string>
-    <string name="no_articles">No articles for now</string>
+    <string name="empty_state">No data for now</string>
     <string name="history_delete">Delete All History</string>
     <string name="history_refresh">Refresh</string>
     <string name="image_placeholder">Image Placeholder</string>

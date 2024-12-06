@@ -2,22 +2,19 @@ package com.dicoding.acnescan.data.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class ArticleResponse(
+data class ProductResponse(
 
 	@field:SerializedName("code")
 	val code: Int,
 
 	@field:SerializedName("data")
-	val data: List<DataItemArticles>,
+	val data: List<DataItemProducts>,
 
 	@field:SerializedName("message")
 	val message: String
 )
 
-data class DataItemArticles(
-
-	@field:SerializedName("article_id")
-	val articleId: Int,
+data class DataItemProducts(
 
 	@field:SerializedName("image")
 	val image: String,
@@ -25,8 +22,11 @@ data class DataItemArticles(
 	@field:SerializedName("updated_at")
 	val updatedAt: String,
 
-	@field:SerializedName("name")
-	val name: String,
+	@field:SerializedName("link")
+	val link: String,
+
+	@field:SerializedName("recommendation_id")
+	val recommendationId: Int,
 
 	@field:SerializedName("description")
 	val description: String,

@@ -16,7 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class BottomNavigation : AppCompatActivity() {
 
-    private lateinit var binding: ActivityBottomNavBinding
+    internal lateinit var binding: ActivityBottomNavBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
