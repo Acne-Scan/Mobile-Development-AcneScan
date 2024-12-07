@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/register"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/et_name"
@@ -50,10 +50,11 @@
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:backgroundTint="@color/white"
+                android:background="@drawable/edit_text_background"
                 android:hint="@string/name"
                 android:padding="12dp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
+                android:inputType="text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_name" />
@@ -64,10 +65,10 @@
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:backgroundTint="@color/white"
+                android:background="@drawable/edit_text_background"
                 android:hint="@string/email"
                 android:padding="12dp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:inputType="textEmailAddress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -79,11 +80,11 @@
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:backgroundTint="@color/white"
+                android:background="@drawable/edit_text_background"
                 android:hint="@string/password"
                 android:inputType="textPassword"
                 android:padding="12dp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_password" />
@@ -94,11 +95,11 @@
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:backgroundTint="@color/white"
+                android:background="@drawable/edit_text_background"
                 android:hint="@string/konfirmasi_password"
                 android:inputType="textPassword"
                 android:padding="12dp"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_confirm_password" />
@@ -134,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
                 android:text="@string/name"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="@+id/et_name"
                 app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
@@ -144,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/email"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="@+id/et_email"
                 app:layout_constraintTop_toBottomOf="@+id/et_name" />
 
@@ -154,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/password"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="@+id/et_password"
                 app:layout_constraintTop_toBottomOf="@+id/et_email" />
 
@@ -164,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/konfirmasi_password"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="@+id/et_confirm_password"
                 app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
