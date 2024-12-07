@@ -40,6 +40,7 @@ class BottomNavigation : AppCompatActivity() {
                 R.id.navigation_home -> viewPager.currentItem = 0
                 R.id.navigation_products -> viewPager.currentItem = 1
                 R.id.navigation_local_gallery -> viewPager.currentItem = 2
+                R.id.navigation_profile -> viewPager.currentItem = 3
             }
             true
         }
@@ -67,6 +68,10 @@ class BottomNavigation : AppCompatActivity() {
                     2 -> {
                         navView.selectedItemId = R.id.navigation_local_gallery
                         supportActionBar?.title = getString(R.string.title_gallery)
+                    }
+                    3 -> {
+                        navView.selectedItemId = R.id.navigation_profile
+                        supportActionBar?.title = getString(R.string.title_profile)
                     }
                 }
             }

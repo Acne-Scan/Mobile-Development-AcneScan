@@ -1,11 +1,13 @@
 package com.dicoding.acnescan.data.adapter.home
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dicoding.acnescan.databinding.ItemArticlesBinding
 import com.dicoding.acnescan.data.model.response.DataItemArticles
+import com.dicoding.acnescan.ui.detail.articles.DetailArticlesActivity
 
 class ArticleAdapter(private val onItemClicked: (DataItemArticles) -> Unit): RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
 
@@ -20,11 +22,23 @@ class ArticleAdapter(private val onItemClicked: (DataItemArticles) -> Unit): Rec
                 .into(binding.articleImage)
 
             binding.root.setOnClickListener {
-                // Handle click on item
+                // Memanggil fungsi klik item (untuk kemungkinan penggunaan di Fragment/Activity lain)
                 onItemClick(articlesData)
-            }
 
-            // Implementasikan listener lain jika dibutuhkan
+                // Intent untuk pindah ke DetailArticlesActivity
+                val context = binding.root.context
+                val intent = Intent(context, DetailArticlesActivity::class.java).apply {
+                    // Menambahkan data ke dalam Intent
+                    putExtra(DetailArticlesActivity.EXTRA_ARTICLE_ID, articlesData.articleId)
+                    putExtra(DetailArticlesActivity.EXTRA_ARTICLE_NAME, articlesData.name)
+                    putExtra(DetailArticlesActivity.EXTRA_ARTICLE_DESCRIPTION, articlesData.description)
+                    putExtra(DetailArticlesActivity.EXTRA_ARTICLE_IMAGE, articlesData.image)
+                    putExtra(DetailArticlesActivity.EXTRA_ARTICLE_UPDATE, articlesData.updatedAt)
+                }
+
+                // Menyalakan Activity baru
+                context.startActivity(intent)
+            }
         }
     }
 

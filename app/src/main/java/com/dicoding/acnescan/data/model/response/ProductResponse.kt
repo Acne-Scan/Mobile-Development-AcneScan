@@ -32,5 +32,8 @@ data class DataItemProducts(
 	val description: String,
 
 	@field:SerializedName("created_at")
-	val createdAt: String
+	val createdAt: String,
+
+	@field:SerializedName("name")
+	val name: String
 )

@@ -1,6 +1,5 @@
 package com.dicoding.acnescan.data.factory
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.dicoding.acnescan.data.model.response.DataItemArticles

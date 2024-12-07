@@ -87,7 +87,7 @@ class ResultActivity : AppCompatActivity() {
 
     private fun setupProductRecyclerView(products: List<Product>) {
         // Setup RecyclerView dengan Adapter
-        val adapter = ProductImageAdapter(products)
+        val adapter = ProductMLAdapter(products)
         binding.recyclerViewProducts.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewProducts.adapter = adapter
     }

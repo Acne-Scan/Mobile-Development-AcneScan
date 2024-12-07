@@ -10,8 +10,8 @@ import com.dicoding.acnescan.databinding.ItemProductBinding
 import com.bumptech.glide.Glide
 import com.dicoding.acnescan.data.model.response.Product
 
-class ProductImageAdapter(private val productList: List<Product>) :
-    RecyclerView.Adapter<ProductImageAdapter.ProductViewHolder>() {
+class ProductMLAdapter(private val productList: List<Product>) :
+    RecyclerView.Adapter<ProductMLAdapter.ProductViewHolder>() {
 
     inner class ProductViewHolder(private val binding: ItemProductBinding) :
         RecyclerView.ViewHolder(binding.root) {

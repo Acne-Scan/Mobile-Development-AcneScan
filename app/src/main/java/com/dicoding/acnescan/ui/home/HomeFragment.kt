@@ -55,7 +55,6 @@ class HomeFragment : Fragment() {
         // Observasi data dari ViewModel
         getDataArticles()
         getDataProducts()
-
     }
 
     private fun getDataArticles() {
@@ -82,7 +81,7 @@ class HomeFragment : Fragment() {
                         binding.emptyState.visibility = View.GONE
                         _articleAdapter.submitList(result.data)
                     }
-                    Log.d("HomeFragment", "getDataProducts: ${result.data}")
+                    Log.d("HomeFragment", "getDataArticles: ${result.data}")
                 }
                 is ResultState.Error -> {
                     binding.articleTitle.visibility = View.GONE
@@ -91,6 +90,8 @@ class HomeFragment : Fragment() {
                     binding.emptyState.visibility = View.VISIBLE// Tampilkan empty state saat error
                     // Anda juga bisa menampilkan pesan error kepada pengguna
                     Log.e("HomeFragment", "Error loading products: ${result.message}")
+
+                    onPause()
                 }
             }
         }
@@ -129,6 +130,8 @@ class HomeFragment : Fragment() {
                     binding.emptyState.visibility = View.VISIBLE// Tampilkan empty state saat error
                     // Anda juga bisa menampilkan pesan error kepada pengguna
                     Log.e("HomeFragment", "Error loading products: ${result.message}")
+
+                    onPause()
                 }
             }
         }
@@ -136,6 +139,10 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        // Menyegarkan data setiap kali fragment dikembalikan ke layar
+//        getDataArticles()
+//        getDataProducts()
+
         // Menonaktifkan swipe untuk ViewPager2 utama di activity/fragment induk
         (activity as? BottomNavigation)?.binding?.navHostFragmentActivityBottomNav?.isUserInputEnabled = false
     }

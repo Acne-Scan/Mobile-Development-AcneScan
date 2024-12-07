@@ -23,4 +23,10 @@
         android:label="@string/title_gallery"
         tools:layout="@layout/fragment_gallery" />
 
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.dicoding.acnescan.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
+
 </navigation>

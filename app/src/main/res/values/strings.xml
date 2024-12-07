@@ -1,19 +1,17 @@
 <resources>
     <string name="app_name">AcneScan</string>
-    <string name="JudulApk">AcneScan</string>
     <string name="masuk_tanpa_login">Tap to Enter</string>
-    <string name="masuk_dengan_google">Masuk dengan Google</string>
-    <string name="masuk_dengan_email">Masuk dengan Email</string>
-    <string name="belum_punya_akun_daftar">Belum punya akun? Daftar</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="login_with_email">Login with Email</string>
+    <string name="no_account">Don\'t have an account?</string>
     <string name="logo_icon">Logo Icon</string>
-    <string name="daftar_acnescan">Daftar AcneScan</string>
-    <string name="nama">Nama</string>
+    <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="konfirmasi_password">Konfirmasi Password</string>
+    <string name="konfirmasi_password">Confirm Password</string>
     <string name="saya_setuju_dengan_ketentuan_layanan_dan_kebijakan_privasi_acnescan">Saya setuju dengan Ketentuan Layanan dan Kebijakan Privasi AcneScan.</string>
-    <string name="daftar">Daftar</string>
-    <string name="sudah_punya_akun_masuk">Sudah punya akun? Masuk</string>
+    <string name="register">Register</string>
+    <string name="already_have_an_account">Already have an account?</string>
     <string name="Introduction">Welcome to AcneScan, an app to analyze your face and giving a recommendation products</string>
 
     <string name="title_activity_bottom_nav">bottom_nav</string>
@@ -53,11 +51,16 @@
     <string name="history_refresh">Refresh</string>
     <string name="image_placeholder">Image Placeholder</string>
     <string name="desc_article">descArticle</string>
-    <string name="detail_skincare">Detail Skincare</string>
+    <string name="detail_products">Detail Products</string>
     <string name="recommendations">Recommendations</string>
     <string name="desc_recommendations">desc_recommendations</string>
     <string name="title_menu">Menu</string>
     <string name="title_toolbar">Toolbar</string>
     <string name="camera_warning">Please bring your camera close to your face to take a picture!</string>
     <string name="title_flip_camera">Flip Camera</string>
+    <string name="update_at">Update at</string>
+    <string name="title_login">Login</string>
+    <string name="hello">Hello!</string>
+    <string name="email_example">user@example.com</string>
+    <string name="title_logout">Logout</string>
 </resources>

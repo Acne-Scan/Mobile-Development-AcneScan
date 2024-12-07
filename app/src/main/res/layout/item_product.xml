@@ -39,7 +39,7 @@
             android:id="@+id/detail_skincare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/detail_skincare"
+            android:text="@string/detail_products"
             android:textSize="14sp"
             android:textColor="#888888"
             android:ellipsize="end"
