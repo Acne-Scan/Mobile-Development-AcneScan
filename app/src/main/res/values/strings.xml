@@ -5,7 +5,7 @@
     <string name="login_with_email">Login with Email</string>
     <string name="no_account">Don\'t have an account?</string>
     <string name="logo_icon">Logo Icon</string>
-    <string name="name">Name</string>
+    <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="konfirmasi_password">Confirm Password</string>
@@ -63,4 +63,5 @@
     <string name="hello">Hello!</string>
     <string name="email_example">user@example.com</string>
     <string name="title_logout">Logout</string>
+    <string name="login_first">Login First</string>
 </resources>

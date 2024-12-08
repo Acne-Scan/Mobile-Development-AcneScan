@@ -1,14 +1,27 @@
 package com.dicoding.acnescan.data.factory
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.dicoding.acnescan.data.model.response.DataItemArticles
 import com.dicoding.acnescan.data.model.response.DataItemProducts
+import com.dicoding.acnescan.data.model.response.LoginRequest
+import com.dicoding.acnescan.data.model.response.LoginResponse
+import com.dicoding.acnescan.data.model.response.RegisterRequest
+import com.dicoding.acnescan.data.model.response.RegisterResponse
 import com.dicoding.acnescan.data.model.retrofit.ApiService
 import com.dicoding.acnescan.data.utils.ResultState
+import com.dicoding.acnescan.util.SharedPrefUtil
+import retrofit2.Response
 
 class Repository private constructor(private val apiService: ApiService) {
 
+    // Fungsi untuk mengambil username dari SharedPreferences
+    fun getUsername(context: Context): String? {
+        return SharedPrefUtil.getUsername(context)
+    }
+
+    // Fungsi untuk mengambil artikel
     fun getArticles(): LiveData<ResultState<List<DataItemArticles>>> = liveData {
         emit(ResultState.Loading)
         try {
@@ -24,6 +37,7 @@ class Repository private constructor(private val apiService: ApiService) {
         }
     }
 
+    // Fungsi untuk mengambil produk
     fun getProducts(): LiveData<ResultState<List<DataItemProducts>>> = liveData {
         emit(ResultState.Loading)
         try {
@@ -37,6 +51,16 @@ class Repository private constructor(private val apiService: ApiService) {
         } catch (e: Exception) {
             emit(ResultState.Error(e.localizedMessage ?: "An unknown error occurred"))
         }
+    }
+
+    // Fungsi untuk melakukan login
+    suspend fun login(loginRequest: LoginRequest): Response<LoginResponse> {
+        return apiService.login(loginRequest)
+    }
+
+    // Fungsi untuk melakukan registrasi
+    suspend fun register(registerRequest: RegisterRequest): Response<RegisterResponse> {
+        return apiService.register(registerRequest)
     }
 
     companion object {

@@ -5,7 +5,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.acnescan.databinding.ActivityMainBinding
 import com.dicoding.acnescan.ui.BottomNavigation
-import com.dicoding.acnescan.ui.RegisterActivity
+import com.dicoding.acnescan.ui.register.RegisterActivity
+import com.dicoding.acnescan.util.SharedPrefUtil
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,6 +14,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Cek apakah token sudah ada, jika ada langsung menuju ke BottomNavigation
+        val token = SharedPrefUtil.getToken(this)
+        if (token != null) {
+            val intent = Intent(this, BottomNavigation::class.java)
+            startActivity(intent)
+            finish() // Finish MainActivity agar tidak bisa kembali
+            return
+        }
 
         // Menghubungkan binding dengan layout activity_main
         binding = ActivityMainBinding.inflate(layoutInflater)

@@ -5,6 +5,12 @@ data class ImageRequest(
     val image: String // Gambar yang dikodekan dalam format base64
 )
 
+// Data class untuk request login
+data class LoginRequest(
+    val username: String,
+    val password: String
+)
+
 // Data class untuk product untuk intent
 data class Product(
     val name: String,
@@ -12,7 +18,15 @@ data class Product(
     val productUrl: String
 )
 
+// Data class untuk history sudah dianalysis
 data class HistoryItem(
     val title: String,
     val description: String
+)
+
+// Data class untuk request register
+data class RegisterRequest(
+    val username: String,
+    val password: String,
+    val role: String = "user" // Role sudah tetap 'user'
 )

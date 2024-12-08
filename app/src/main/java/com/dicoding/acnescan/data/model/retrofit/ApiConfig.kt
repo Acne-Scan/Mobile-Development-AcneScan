@@ -1,5 +1,6 @@
 package com.dicoding.acnescan.data.model.retrofit
 
+import android.content.Context
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -8,26 +9,38 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 class ApiConfig {
+
     companion object {
-        val baseURL = "https://acnescan-final.et.r.appspot.com/"
+        private const val BASE_URL = "https://acnescan-final.et.r.appspot.com/"
 
-        fun getApiService(): ApiService {
-
+        fun getApiService(context: Context): ApiService {
+            // Auth Interceptor untuk menambahkan Authorization header
             val authInterceptor = Interceptor { chain ->
-                val req = chain.request()
-                val requestHeaders = req.newBuilder()
-                    .build()
-                chain.proceed(requestHeaders)
+                val sharedPreferences = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+                val token = sharedPreferences.getString("token", null)
+
+                val requestBuilder = chain.request().newBuilder()
+                if (!token.isNullOrEmpty()) {
+                    requestBuilder.addHeader("Authorization", "Bearer $token")
+                }
+
+                val request = requestBuilder.build()
+                chain.proceed(request)
             }
+
             val client = OkHttpClient.Builder()
-                .addInterceptor(authInterceptor)
+                .addInterceptor(authInterceptor)  // Menambahkan authInterceptor
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build()
 
             val retrofit = Retrofit.Builder()
-                .baseUrl(baseURL)
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
+
             return retrofit.create(ApiService::class.java)
         }
     }

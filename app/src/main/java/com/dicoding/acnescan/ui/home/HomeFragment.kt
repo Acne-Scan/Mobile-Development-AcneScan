@@ -13,6 +13,7 @@ import com.dicoding.acnescan.data.utils.ResultState
 import com.dicoding.acnescan.data.adapter.home.ArticleAdapter
 import com.dicoding.acnescan.data.adapter.home.ProductAdapter
 import com.dicoding.acnescan.ui.BottomNavigation
+import com.dicoding.acnescan.util.SharedPrefUtil
 
 class HomeFragment : Fragment() {
 
@@ -38,6 +39,18 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Cek status login dan tampilkan username jika login berhasil
+        val token = SharedPrefUtil.getToken(requireContext())
+        if (token != null) {
+            // Jika ada token, berarti pengguna sudah login, tampilkan username
+            val username = SharedPrefUtil.getUsername(requireContext())
+            binding.tvUsername.text = username
+            binding.tvUsername.visibility = View.VISIBLE
+        } else {
+            // Jika token tidak ada, sembunyikan tv_name
+            binding.tvUsername.visibility = View.GONE
+        }
+        
         // Inisialisasi adapter dengan klik handler
         _articleAdapter = ArticleAdapter { dataItem ->
             // Handle klik item
