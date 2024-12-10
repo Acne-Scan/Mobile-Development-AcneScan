@@ -19,9 +19,12 @@ data class Product(
 )
 
 // Data class untuk history sudah dianalysis
-data class HistoryItem(
-    val title: String,
-    val description: String
+data class AddHistoryRequest(
+    val image: Map<String, String>,
+    val prediction: String,
+    val recommendation: String,
+    val product_links: Map<String, String>,
+    val user_picture: String
 )
 
 // Data class untuk request register

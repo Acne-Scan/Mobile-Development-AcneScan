@@ -1,4 +1,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightgrey">
@@ -6,10 +8,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
 
-        android:padding="16dp"
-        xmlns:tools="http://schemas.android.com/tools">
+        android:padding="16dp">
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -109,17 +109,27 @@
             android:layout_marginTop="8dp"
             tools:listitem="@layout/item_product_home"/>
 
+        <!-- Garis Horizontal -->
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/green"
+            android:layout_marginTop="32dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/product_carousel" />
+
         <!-- Artikel -->
         <TextView
             android:id="@+id/article_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:text="@string/title_article"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/product_carousel" />
+            app:layout_constraintTop_toBottomOf="@+id/view" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/article_carousel"

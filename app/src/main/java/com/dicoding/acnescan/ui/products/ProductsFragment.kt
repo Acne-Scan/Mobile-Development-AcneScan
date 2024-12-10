@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,45 +46,63 @@ class ProductsFragment : Fragment() {
         binding.productList.adapter = _productAdapter
 
         // Observasi data dari ViewModel
-        getDataProducts()
+        observeViewModel()
+
+        // Setup pencarian
+        setupSearch()
     }
 
-    private fun getDataProducts() {
+    private fun observeViewModel() {
+        // Ambil semua produk
         homeViewModel.getProducts()
+
+        // Observasi hasil pencarian (data yang telah difilter)
+        homeViewModel.filteredProducts.observe(viewLifecycleOwner) { filteredList ->
+            if (filteredList.isEmpty()) {
+                binding.productList.visibility = View.GONE
+                binding.emptyState.visibility = View.VISIBLE
+            } else {
+                binding.productList.visibility = View.VISIBLE
+                binding.emptyState.visibility = View.GONE
+                _productAdapter.submitList(filteredList)
+            }
+        }
+
+        // Observasi status (loading/success/error)
         homeViewModel.products.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is ResultState.Loading -> {
                     binding.progressBar.visibility = View.VISIBLE
-                    binding.productList.visibility = View.GONE // Sembunyikan RecyclerView saat loading
-                    binding.emptyState.visibility = View.GONE // Sembunyikan empty state
+                    binding.productList.visibility = View.GONE
+                    binding.emptyState.visibility = View.GONE
                 }
                 is ResultState.Success -> {
                     binding.progressBar.visibility = View.GONE
-                    if (result.data.isEmpty()) {
-                        binding.productList.visibility = View.GONE
-                        binding.emptyState.visibility = View.VISIBLE // Tampilkan empty state jika data kosong
-                    } else {
-                        binding.productList.visibility = View.VISIBLE
-                        binding.emptyState.visibility = View.GONE
-                        _productAdapter.submitList(result.data) // Update data ke adapter
-                    }
-                    Log.d("ProductsFragment", "getDataProducts: ${result.data}")
                 }
                 is ResultState.Error -> {
                     binding.progressBar.visibility = View.GONE
                     binding.productList.visibility = View.GONE
-                    binding.emptyState.visibility = View.VISIBLE // Tampilkan empty state saat error
+                    binding.emptyState.visibility = View.VISIBLE
                     Log.e("ProductsFragment", "Error loading products: ${result.message}")
                 }
             }
         }
     }
 
-//    override fun onResume(){
-//        super.onResume()
-//        // Menyegarkan data setiap kali fragment dikembalikan ke layar
-//        getDataProducts()
-//    }
+    private fun setupSearch() {
+        // Mengatur logika pencarian pada SearchView
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let { homeViewModel.search(it) } // Kirim query ke ViewModel
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let { homeViewModel.search(it) } // Kirim query ke ViewModel
+                return true
+            }
+        })
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -11,7 +11,9 @@
     <color name="gray">#FFCCCCCC</color> <!-- Light gray for borders and accents -->
     <color name="lightgrey">#F2F6FF</color>
     <color name="red">#F44336</color>
+    <color name="green">#365545</color>
 
     <!-- Accent Colors -->
     <color name="accent">#A0C2B0</color> <!-- Complementary green accent -->
+    <color name="item">#666666</color>
 </resources>

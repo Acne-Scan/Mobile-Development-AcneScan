@@ -27,7 +27,7 @@ class ProductMLAdapter(private val productList: List<Product>) :
 
             binding.root.setOnClickListener {
                 // Intent untuk membuka URL produk di browser
-                Log.d("ProductAdapter", "Opening link for: ${product.name}, URL: ${product.productUrl}")
+                Log.d("ProductMLAdapter", "Opening link for: ${product.name}, URL: ${product.productUrl}")
 
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(product.productUrl))
                 binding.root.context.startActivity(intent)

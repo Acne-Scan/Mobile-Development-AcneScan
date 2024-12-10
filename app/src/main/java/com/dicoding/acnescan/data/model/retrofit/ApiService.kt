@@ -1,7 +1,10 @@
 package com.dicoding.acnescan.data.model.retrofit
 
+import com.dicoding.acnescan.data.model.response.AddHistoryRequest
+import com.dicoding.acnescan.data.model.response.AddHistoryResponse
 import com.dicoding.acnescan.data.model.response.ArticleResponse
 import com.dicoding.acnescan.data.model.response.FileUploadResponse
+import com.dicoding.acnescan.data.model.response.GetHistoryResponse
 import com.dicoding.acnescan.data.model.response.ImageRequest
 import com.dicoding.acnescan.data.model.response.LoginRequest
 import com.dicoding.acnescan.data.model.response.LoginResponse
@@ -33,6 +36,18 @@ interface ApiService {
     suspend fun register(
         @Body registerRequest: RegisterRequest // Mengirimkan request body yang berisi username dan password
     ): Response<RegisterResponse>
+
+    // Service ambil history dengan mengirim token ke header
+    @GET("history")
+    suspend fun getHistory(
+
+    ): Response<GetHistoryResponse>
+
+    // Service mengirim data untuk disimpn di history
+    @POST("history")
+    suspend fun saveHistory(
+        @Body addHistory: AddHistoryRequest
+    ): Response<AddHistoryResponse>
 
     // Service Machine Learning
     @POST("/predict")

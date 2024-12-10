@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -29,7 +29,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AcneScan"
-        tools:targetApi="31" >
+        tools:targetApi="31">
+        <activity
+            android:name=".ui.LoadingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.history.DetailHistoryActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.login.MainActivity"
             android:exported="false"
@@ -38,7 +44,7 @@
             android:name=".ui.login.Splash"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Splash" >
+            android:theme="@style/Theme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,11 +54,12 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
-            android:label="@string/title_login" />
-        <activity android:name=".ui.register.RegisterActivity"
+            android:label="@string/title_login"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.register.RegisterActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.camera.CameraActivity"
             android:exported="false"

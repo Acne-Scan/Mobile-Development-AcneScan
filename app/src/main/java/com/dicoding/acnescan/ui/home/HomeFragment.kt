@@ -102,7 +102,7 @@ class HomeFragment : Fragment() {
                     binding.productCarousel.visibility = View.GONE
                     binding.emptyState.visibility = View.VISIBLE// Tampilkan empty state saat error
                     // Anda juga bisa menampilkan pesan error kepada pengguna
-                    Log.e("HomeFragment", "Error loading products: ${result.message}")
+                    Log.e("HomeFragment", "Error loading articles: ${result.message}")
 
                     onPause()
                 }

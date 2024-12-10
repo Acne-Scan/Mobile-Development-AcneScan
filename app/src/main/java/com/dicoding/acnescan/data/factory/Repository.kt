@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.dicoding.acnescan.data.model.response.DataItemArticles
 import com.dicoding.acnescan.data.model.response.DataItemProducts
+import com.dicoding.acnescan.data.model.response.GetHistoryResponse
 import com.dicoding.acnescan.data.model.response.LoginRequest
 import com.dicoding.acnescan.data.model.response.LoginResponse
 import com.dicoding.acnescan.data.model.response.RegisterRequest
@@ -61,6 +62,11 @@ class Repository private constructor(private val apiService: ApiService) {
     // Fungsi untuk melakukan registrasi
     suspend fun register(registerRequest: RegisterRequest): Response<RegisterResponse> {
         return apiService.register(registerRequest)
+    }
+
+    // Fungsi untuk mengambil history
+    suspend fun getHistory(): Response<GetHistoryResponse> {
+        return apiService.getHistory()
     }
 
     companion object {

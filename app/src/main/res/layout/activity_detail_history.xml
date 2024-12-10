@@ -32,20 +32,21 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp">
 
-                <ImageView
-                    android:id="@+id/imageViewPlaceholder"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_marginBottom="8dp"
-                    android:contentDescription="@string/image_placeholder"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/pp_patrickk" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/imageViewPlaceholder"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="300dp"-->
+<!--                    android:layout_marginBottom="8dp"-->
+<!--                    android:contentDescription="@string/image_placeholder"-->
+<!--                    android:scaleType="fitCenter"-->
+<!--                    app:srcCompat="@drawable/pp_patrickk" />-->
 
                 <!-- Judul Prediksi -->
                 <TextView
                     android:id="@+id/predictionTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="@string/result_placeholder"
                     android:textSize="24sp"
                     android:textStyle="bold"
@@ -68,40 +69,50 @@
                     android:textSize="16sp"
                     android:text="@string/desc_recommendations" />
 
+<!--                <TextView-->
+<!--                    android:id="@+id/recommendationTitle"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/recommended_products"-->
+<!--                    android:textSize="20sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:layout_marginTop="24dp"-->
+<!--                    android:layout_marginBottom="8dp"/>-->
+
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/recyclerViewProducts"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="0dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    tools:listitem="@layout/item_product"/>-->
+
                 <!-- Garis Horizontal -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/green"
-                    android:layout_marginTop="24dp" />
+                    android:layout_marginTop="32dp" />
 
                 <TextView
-                    android:id="@+id/recommendationTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/recommended_products"
-                    android:textSize="20sp"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/notes"
+                    android:textColor="@color/green"
                     android:textStyle="bold"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:textSize="18sp"
+                    android:textAlignment="center"/>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewProducts"
+                <TextView
+                    android:id="@+id/notes"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    tools:listitem="@layout/item_product"/>
-
-                <!-- Tombol Save ke history -->
-                <Button
-                    android:id="@+id/buttonSave"
-                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="16dp"
-                    android:text="@string/save" />
+                    android:text="@string/notes_goto_camera"
+                    android:textStyle="italic"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:textColor="@color/item"/>
 
             </LinearLayout>
 

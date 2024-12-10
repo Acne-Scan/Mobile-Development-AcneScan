@@ -10,7 +10,6 @@ import com.dicoding.acnescan.databinding.ActivityRegisterBinding
 import com.dicoding.acnescan.ui.login.LoginActivity
 import com.dicoding.acnescan.ui.login.MainActivity
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import com.dicoding.acnescan.ui.register.RegisterViewModel.RegisterStatus
 
 class RegisterActivity : AppCompatActivity() {
@@ -73,29 +72,45 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         // Observe status registrasi
-        registerViewModel.registerStatus.observe(this, Observer { status ->
+        registerViewModel.registerStatus.observe(this) { status ->
             when (status) {
                 is RegisterStatus.Success -> {
                     // Jika registrasi sukses, tampilkan pesan sukses
-                    Toast.makeText(this, "Registration Successful: ${status.message}", Toast.LENGTH_LONG).show()
-                    Log.d("RegisterActivity", "Registrasi berhasil: ${status.message}") // Log debugging
+                    Toast.makeText(
+                        this,
+                        "Registration Successful: ${status.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    Log.d(
+                        "RegisterActivity",
+                        "Registrasi berhasil: ${status.message}"
+                    ) // Log debugging
 
                     // Pindah ke LoginActivity setelah registrasi sukses
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
                     finish() // Pastikan agar pengguna tidak bisa kembali ke RegisterActivity
                 }
+
                 is RegisterStatus.Failure -> {
                     // Jika gagal, tampilkan pesan kesalahan
-                    Toast.makeText(this, "Registration Failed: ${status.message}", Toast.LENGTH_LONG).show()
-                    Log.d("RegisterActivity", "Registrasi gagal: ${status.message}") // Log debugging
+                    Toast.makeText(
+                        this,
+                        "Registration Failed: ${status.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    Log.d(
+                        "RegisterActivity",
+                        "Registrasi gagal: ${status.message}"
+                    ) // Log debugging
                 }
+
                 is RegisterStatus.Error -> {
                     // Jika terjadi error lain, tampilkan pesan error
                     Toast.makeText(this, "Error: ${status.message}", Toast.LENGTH_LONG).show()
                     Log.d("RegisterActivity", "Error: ${status.message}") // Log debugging
                 }
             }
-        })
+        }
     }
 }

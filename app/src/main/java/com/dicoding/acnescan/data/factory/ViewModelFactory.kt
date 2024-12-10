@@ -3,6 +3,7 @@ package com.dicoding.acnescan.data.factory
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.dicoding.acnescan.ui.history.HistoryAnalyzeViewModel
 import com.dicoding.acnescan.ui.home.HomeViewModel
 import com.dicoding.acnescan.ui.login.LoginViewModel
 import com.dicoding.acnescan.ui.profile.ProfileViewModel
@@ -23,10 +24,13 @@ class ViewModelFactory(private val repository: Repository) : ViewModelProvider.N
                 LoginViewModel(repository) as T
             }
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
-                ProfileViewModel(repository) as T // Menambahkan ProfileViewModel
+                ProfileViewModel(repository) as T
             }
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
                 RegisterViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(HistoryAnalyzeViewModel::class.java) -> {
+                HistoryAnalyzeViewModel(repository) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

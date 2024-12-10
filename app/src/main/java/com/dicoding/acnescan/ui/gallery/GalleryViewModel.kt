@@ -26,7 +26,7 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
     }
 
     // Fungsi untuk mengambil data dari repository
-    private fun fetchHistory() {
+    fun fetchHistory() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val data = galleryRepository.getAllHistory() // Panggil fungsi suspend
