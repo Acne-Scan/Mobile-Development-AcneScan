@@ -31,17 +31,15 @@
         android:theme="@style/Theme.AcneScan"
         tools:targetApi="31">
         <activity
-            android:name=".ui.camera.CameraActivity"
-            android:screenOrientation="portrait"
+            android:name=".ui.LoadingActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.history.HistoryAnalyzeActivity"
-            android:screenOrientation="portrait"
+            android:name=".ui.history.DetailHistoryActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.detail.articles.DetailArticlesActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:name=".ui.login.MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.login.Splash"
             android:exported="true"
@@ -54,17 +52,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.login.MainActivity"
-            android:screenOrientation="portrait"
-            android:exported="true" />
+            android:name=".ui.login.LoginActivity"
+            android:exported="false"
+            android:label="@string/title_login"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.register.RegisterActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.camera.CameraActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.history.HistoryAnalyzeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.detail.articles.DetailArticlesActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.camera.ResultActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.camera.AnalysisActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="androidx.camera.lifecycle.CameraXConfig"
@@ -72,9 +87,9 @@
 
         <activity
             android:name=".ui.BottomNavigation"
-            android:screenOrientation="portrait"
             android:exported="false"
-            android:label="@string/title_activity_bottom_nav" />
+            android:label="@string/title_activity_bottom_nav"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -13,7 +13,7 @@ class ProductAdapter(private val onItemClicked: (DataItemProducts) -> Unit): Rec
 
     class ProductViewHolder(private val binding: ItemProductHomeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(productsData: DataItemProducts, onItemClick: (DataItemProducts) -> Unit) {
-//            binding.productName.text = productsData.name
+            binding.productName.text = productsData.name
 
             Glide.with(binding.root.context)
                 .load(productsData.image)
@@ -37,8 +37,8 @@ class ProductAdapter(private val onItemClicked: (DataItemProducts) -> Unit): Rec
 
     override fun getItemCount(): Int = productList.size
 
-    fun submitList(articles: List<DataItemProducts>) {
-        productList = articles
+    fun submitList(products: List<DataItemProducts>) {
+        productList = products
         notifyDataSetChanged()
     }
 }

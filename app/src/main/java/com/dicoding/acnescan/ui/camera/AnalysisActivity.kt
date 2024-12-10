@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.acnescan.data.model.response.ImageRequest
@@ -73,9 +74,14 @@ class AnalysisActivity : AppCompatActivity() {
 
         // Tombol analisis
         binding.buttonAnalyze.setOnClickListener {
+            // Menghilangkan tampilan semuanya dan menampilkan loading
+            binding.imageView.visibility = View.GONE
+            binding.buttonContainer.visibility = View.GONE
+            binding.progressBar.visibility = View.VISIBLE
+
             bitmapToAnalyze?.let {
                 // Menampilkan Toast "Harap menunggu"
-                Toast.makeText(this, "Harap menunggu gambar sedang diproses ...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please wait your image is on processing...", Toast.LENGTH_SHORT).show()
 
                 // Memulai proses analisis gambar
                 analyzeImage(it)
@@ -132,10 +138,6 @@ class AnalysisActivity : AppCompatActivity() {
                         // Log hasil prediksi
                         Log.d("AnalysisActivity", "Predicted Class: $predictedClass, Confidence: $confidence")
 
-                        // Menampilkan hasil prediksi
-                        val resultMessage = "Prediksi: $predictedClass\nKepercayaan: ${String.format("%.2f", confidence * 100)}%"
-                        Toast.makeText(this@AnalysisActivity, resultMessage, Toast.LENGTH_LONG).show()
-
                         // Kirim hasil ke ResultActivity
                         sendAnalysisResult(predictedClass,
                             confidence,
@@ -184,11 +186,13 @@ class AnalysisActivity : AppCompatActivity() {
         return file
     }
 
-    private fun sendAnalysisResult(predictionType: String,
-                                   confidenceScore: Float,
-                                   productImages: Map<String, String>?,
-                                   descRecommendation: String,
-                                   productLinks: Map<String, String>?) {
+    private fun sendAnalysisResult(
+        predictionType: String,
+        confidenceScore: Float,
+        productImages: Map<String, String>?,
+        descRecommendation: String,
+        productLinks: Map<String, String>? ) {
+
         // Simpan gambar yang dikompresi ke file sementara
         val reducedImageFile = saveCompressedBitmapToFile(bitmapToAnalyze!!)
 
@@ -207,6 +211,16 @@ class AnalysisActivity : AppCompatActivity() {
         }
         startActivity(intent)
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Pastikan tampilan kembali ke keadaan default ketika halaman ini dimuat ulang
+        binding.progressBar.visibility = View.GONE // Sembunyikan loading bar
+        binding.imageView.visibility = View.VISIBLE // Tampilkan kembali gambar
+        binding.buttonContainer.visibility = View.VISIBLE // Tampilkan kembali tombol
+    }
+
     companion object {
         const val EXTRA_IMAGE_PATH = "extra_image_path"
         const val EXTRA_IMAGE_URI = "extra_image_uri"

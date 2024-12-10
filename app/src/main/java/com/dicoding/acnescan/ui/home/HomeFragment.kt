@@ -13,6 +13,7 @@ import com.dicoding.acnescan.data.utils.ResultState
 import com.dicoding.acnescan.data.adapter.home.ArticleAdapter
 import com.dicoding.acnescan.data.adapter.home.ProductAdapter
 import com.dicoding.acnescan.ui.BottomNavigation
+import com.dicoding.acnescan.util.SharedPrefUtil
 
 class HomeFragment : Fragment() {
 
@@ -38,6 +39,18 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Cek status login dan tampilkan username jika login berhasil
+        val token = SharedPrefUtil.getToken(requireContext())
+        if (token != null) {
+            // Jika ada token, berarti pengguna sudah login, tampilkan username
+            val username = SharedPrefUtil.getUsername(requireContext())
+            binding.tvUsername.text = username
+            binding.tvUsername.visibility = View.VISIBLE
+        } else {
+            // Jika token tidak ada, sembunyikan tv_name
+            binding.tvUsername.visibility = View.GONE
+        }
+        
         // Inisialisasi adapter dengan klik handler
         _articleAdapter = ArticleAdapter { dataItem ->
             // Handle klik item
@@ -55,7 +68,6 @@ class HomeFragment : Fragment() {
         // Observasi data dari ViewModel
         getDataArticles()
         getDataProducts()
-
     }
 
     private fun getDataArticles() {
@@ -82,7 +94,7 @@ class HomeFragment : Fragment() {
                         binding.emptyState.visibility = View.GONE
                         _articleAdapter.submitList(result.data)
                     }
-                    Log.d("HomeFragment", "getDataProducts: ${result.data}")
+                    Log.d("HomeFragment", "getDataArticles: ${result.data}")
                 }
                 is ResultState.Error -> {
                     binding.articleTitle.visibility = View.GONE
@@ -90,7 +102,9 @@ class HomeFragment : Fragment() {
                     binding.productCarousel.visibility = View.GONE
                     binding.emptyState.visibility = View.VISIBLE// Tampilkan empty state saat error
                     // Anda juga bisa menampilkan pesan error kepada pengguna
-                    Log.e("HomeFragment", "Error loading products: ${result.message}")
+                    Log.e("HomeFragment", "Error loading articles: ${result.message}")
+
+                    onPause()
                 }
             }
         }
@@ -129,6 +143,8 @@ class HomeFragment : Fragment() {
                     binding.emptyState.visibility = View.VISIBLE// Tampilkan empty state saat error
                     // Anda juga bisa menampilkan pesan error kepada pengguna
                     Log.e("HomeFragment", "Error loading products: ${result.message}")
+
+                    onPause()
                 }
             }
         }
@@ -136,6 +152,10 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        // Menyegarkan data setiap kali fragment dikembalikan ke layar
+//        getDataArticles()
+//        getDataProducts()
+
         // Menonaktifkan swipe untuk ViewPager2 utama di activity/fragment induk
         (activity as? BottomNavigation)?.binding?.navHostFragmentActivityBottomNav?.isUserInputEnabled = false
     }

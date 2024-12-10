@@ -72,6 +72,10 @@ class CameraActivity : AppCompatActivity() {
             startCamera() // Restart kamera dengan kamera yang baru dipilih
         }
 
+        binding.btnBack.setOnClickListener {
+            onBackPressed()
+        }
+
         // Inisialisasi executor kamera
         cameraExecutor = Executors.newSingleThreadExecutor()
     }

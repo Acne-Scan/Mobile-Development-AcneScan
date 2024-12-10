@@ -51,16 +51,6 @@
                     android:textStyle="bold"
                     android:gravity="center" />
 
-                <!-- Persentase Kepercayaan -->
-                <TextView
-                    android:id="@+id/confidenceScore"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/confidence_score"
-                    android:textSize="18sp"
-                    android:layout_marginTop="4dp"
-                    android:gravity="center" />
-
                 <TextView
                     android:id="@+id/recommendations"
                     android:layout_width="match_parent"
@@ -78,6 +68,13 @@
                     android:textSize="16sp"
                     android:text="@string/desc_recommendations" />
 
+                <!-- Garis Horizontal -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/green"
+                    android:layout_marginTop="24dp" />
+
                 <TextView
                     android:id="@+id/recommendationTitle"
                     android:layout_width="match_parent"
@@ -92,7 +89,19 @@
                     android:id="@+id/recyclerViewProducts"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    tools:listitem="@layout/item_product"/>
+
+                <!-- Tombol Save ke history -->
+                <Button
+                    android:id="@+id/buttonSave"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/save" />
 
             </LinearLayout>
 

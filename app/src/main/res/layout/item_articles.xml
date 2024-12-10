@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:scaleType="centerCrop"
+            android:src="@drawable/pp_patrickk"
             android:contentDescription="@string/article_image" />
 
         <!-- TextView untuk judul -->
