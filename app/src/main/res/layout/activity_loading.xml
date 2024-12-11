@@ -11,17 +11,7 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:indeterminate="true"/>
-
-    <!-- TextView untuk menunjukkan pesan status -->
-    <TextView
-        android:id="@+id/statusText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/saving_data"
-        android:textSize="16sp"
-        android:textColor="@color/primary_dark"
-        android:layout_marginTop="16dp"/>
 
 </LinearLayout>

@@ -107,7 +107,7 @@ class RegisterActivity : AppCompatActivity() {
 
                 is RegisterStatus.Error -> {
                     // Jika terjadi error lain, tampilkan pesan error
-                    Toast.makeText(this, "Error: ${status.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Error", Toast.LENGTH_LONG).show()
                     Log.d("RegisterActivity", "Error: ${status.message}") // Log debugging
                 }
             }

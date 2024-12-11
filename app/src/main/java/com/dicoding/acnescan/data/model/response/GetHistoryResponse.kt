@@ -38,7 +38,7 @@ data class DataItem(
 	val createdAt: String? = null,
 
 	@field:SerializedName("history_id")
-	val historyId: Int? = null,
+	val historyId: String? = null,
 
 	@field:SerializedName("product_links")
 	val productLinks: Map<String, String>,

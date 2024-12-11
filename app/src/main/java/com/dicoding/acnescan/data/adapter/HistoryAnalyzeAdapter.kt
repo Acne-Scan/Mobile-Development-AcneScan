@@ -5,10 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.dicoding.acnescan.R
 import com.dicoding.acnescan.data.model.response.DataItem
-import com.dicoding.acnescan.databinding.ItemHistoryAnalyzeBinding
+import com.dicoding.acnescan.databinding.ItemHistoryBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,7 +15,7 @@ class HistoryAnalyzeAdapter(private var historyList: List<DataItem?>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         // Inflate the layout item_history.xml
-        val binding = ItemHistoryAnalyzeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemHistoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HistoryViewHolder(binding)
     }
 
@@ -46,28 +44,16 @@ class HistoryAnalyzeAdapter(private var historyList: List<DataItem?>) :
     }
 
 
-    class HistoryViewHolder(private val binding: ItemHistoryAnalyzeBinding) :
+    class HistoryViewHolder(private val binding: ItemHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: DataItem?) {
             // Set title and subtitle
             binding.historyTitle.text = item?.prediction  // Set the prediction as title
 
-//            // Load the first image from the map using Glide
-//            val imageUrl = item?.userPicture // Get the first image URL from the map
-//            if (imageUrl != null) {
-//                Glide.with(binding.root.context)
-//                    .load(imageUrl)
-//                    .into(binding.historyImg)
-//            } else {
-//                // Set a placeholder if no image is available
-//                binding.historyImg.setImageResource(R.drawable.ic_notification)
-//            }
-
-
             // Format `created_at` menjadi tanggal yang lebih ramah pengguna
             val formattedDate = formatTimestamp(item?.createdAt)
-            binding.historyTimestamp.text = formattedDate
+            binding.historyTime.text = formattedDate
 
             // Set the click listener for item click
             binding.root.setOnClickListener {

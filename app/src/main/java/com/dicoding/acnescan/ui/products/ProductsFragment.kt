@@ -104,6 +104,12 @@ class ProductsFragment : Fragment() {
         })
     }
 
+//    override fun onResume() {
+//        super.onResume()
+//        // Menyegarkan data setiap kali fragment dikembalikan ke layar
+//        observeViewModel()
+//    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

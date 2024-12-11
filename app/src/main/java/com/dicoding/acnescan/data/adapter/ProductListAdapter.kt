@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
@@ -17,7 +18,7 @@ class ProductListAdapter : ListAdapter<DataItemProducts, ProductListAdapter.Prod
 
         fun bind(product: DataItemProducts) {
             // Menampilkan nama produk
-            binding.productName.text = product.name
+            binding.productName.text = product.description
 
             // Menampilkan gambar produk menggunakan Glide
             Glide.with(binding.productImage.context)
@@ -26,9 +27,22 @@ class ProductListAdapter : ListAdapter<DataItemProducts, ProductListAdapter.Prod
 
             // Klik untuk membuka link produk di browser
             binding.root.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(product.link))
-                itemView.context.startActivity(intent)
+                // Membuat AlertDialog
+                val builder = AlertDialog.Builder(itemView.context)
+                builder.setTitle("Product Details")
+                builder.setMessage("The product you want is in a third party application")
+                builder.setPositiveButton("Yes") { _, _ ->
+                    // Jika pengguna memilih "Ya", buka link produk
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(product.link))
+                    itemView.context.startActivity(intent)
+                }
+                builder.setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+
+                builder.show()
             }
+
         }
     }
 

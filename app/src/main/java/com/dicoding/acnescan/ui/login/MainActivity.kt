@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // Set onClickListener untuk button register
         binding.tvRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP // Clear back stack dari LoginActivity

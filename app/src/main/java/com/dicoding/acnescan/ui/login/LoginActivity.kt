@@ -10,6 +10,7 @@ import com.dicoding.acnescan.data.factory.ViewModelFactory
 import com.dicoding.acnescan.databinding.ActivityLoginBinding
 import com.dicoding.acnescan.data.model.response.LoginRequest
 import com.dicoding.acnescan.ui.BottomNavigation
+import com.dicoding.acnescan.ui.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -51,13 +52,20 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
+        // Set onClickListener untuk button register
+        binding.tvRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP // Clear back stack dari LoginActivity
+            startActivity(intent)
+        }
+
         // Observasi status login
         loginViewModel.loginStatus.observe(this) { status ->
             when (status) {
                 is LoginViewModel.LoginStatus.Success -> {
                     saveUserData(status.username, status.token) // Menyimpan username dan tokenToken(status.token)
                     Log.d("LoginActivity", "Token berhasil disimpan: ${status.token}") // Log token di Activity
-                    Toast.makeText(applicationContext, "Login berhasil", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Login success", Toast.LENGTH_SHORT).show()
                     navigateToHome()
                 }
 
@@ -65,16 +73,16 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("LoginActivity", "Login gagal: ${status.message}") // Log message gagal login
                     Toast.makeText(
                         applicationContext,
-                        "Login gagal: ${status.message}",
+                        "Failed to login: Please check your internet connection",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
 
                 is LoginViewModel.LoginStatus.Error -> {
-                    Log.e("LoginActivity", "Terjadi kesalahan: ${status.message}") // Log error jika ada
+                    Log.e("LoginActivity", "Error: ${status.message}") // Log error jika ada
                     Toast.makeText(
                         applicationContext,
-                        "Terjadi kesalahan: ${status.message}",
+                        "Username or password is wrong",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
