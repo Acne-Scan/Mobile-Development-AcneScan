@@ -83,7 +83,7 @@ dependencies {
     implementation (libs.converter.gson)
     implementation (libs.logging.interceptor)
     implementation (libs.kotlinx.coroutines.android)
-    implementation(libs.androidx.lifecycle.runtime.ktx)//untuk lifecycleScope
+    implementation(libs.androidx.lifecycle.runtime.ktx)
 
     //tflite
     implementation(libs.tensorflow.lite.task.vision)
@@ -95,7 +95,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation (libs.androidx.room.runtime)
     annotationProcessor (libs.androidx.room.compiler)
-    kapt ("androidx.room:room-compiler:2.6.0") // Jika menggunakan Kotlin
+    kapt ("androidx.room:room-compiler:2.6.0") // Untuk Kotlin
 
     //coroutine
     implementation (libs.kotlinx.coroutines.android)
