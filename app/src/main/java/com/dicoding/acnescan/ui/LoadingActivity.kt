@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.dicoding.acnescan.R
@@ -91,7 +92,7 @@ class LoadingActivity : AppCompatActivity() {
         progressBar.visibility = View.GONE
         // Tampilkan hasil atau pindah ke activity lain jika perlu
         Log.d("LoadingActivity", "Success: ${response.body()?.message}")
-        Log.d("LoadingActivity", "Body: ${response.body()}")
+        Toast.makeText(applicationContext, "Save to history", Toast.LENGTH_SHORT).show()
 
         val intent = Intent(this, BottomNavigation::class.java)
         startActivity(intent)
@@ -102,11 +103,21 @@ class LoadingActivity : AppCompatActivity() {
         progressBar.visibility = View.GONE
         // Tampilkan pesan error jika request gagal
         Log.e("LoadingActivity", "Error: ${response.message()}")
+        Toast.makeText(applicationContext, "Response error", Toast.LENGTH_SHORT).show()
+
+        val intent = Intent(this, BottomNavigation::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun handleError(e: Exception) {
         progressBar.visibility = View.GONE
         Log.e("LoadingActivity", "Error: ${e.message}")
+        Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
+
+        val intent = Intent(this, BottomNavigation::class.java)
+        startActivity(intent)
+        finish()
     }
 
     companion object {

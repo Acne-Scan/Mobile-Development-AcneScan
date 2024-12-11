@@ -38,7 +38,7 @@
     <string name="button_analyze">Analyze</string>
     <string name="tipe_jerawat">Tipe Jerawat</string>
     <string name="confidence_score">Confidence Score: 90%</string>
-    <string name="history_data_kosong">No history to be shown</string>
+    <string name="history_data_kosong">No photo history to be shown</string>
     <string name="history_scan">Photo taken!</string>
     <string name="history_detail">Tap to see details!</string>
     <string name="history_timestamp">11 Menit</string>
@@ -47,7 +47,7 @@
     <string name="search">Search…</string>
     <string name="recommended_products">Recommended Products</string>
     <string name="empty_state">No data for now</string>
-    <string name="history_delete">Delete All History</string>
+    <string name="history_delete">Delete All Photo History</string>
     <string name="history_refresh">Refresh</string>
     <string name="image_placeholder">Image Placeholder</string>
     <string name="desc_article">descArticle</string>
@@ -56,7 +56,7 @@
     <string name="desc_recommendations">desc_recommendations</string>
     <string name="title_menu">Menu</string>
     <string name="title_toolbar">Toolbar</string>
-    <string name="camera_warning">Please bring your camera close to your face to take a picture!</string>
+    <string name="camera_warning">Please bring the camera close to your acne so we can scan more accurately!</string>
     <string name="title_flip_camera">Flip Camera</string>
     <string name="update_at">Update at</string>
     <string name="title_login">Login</string>
@@ -68,6 +68,8 @@
     <string name="no_history">You don\'t have any analysis history yet.</string>
     <string name="save">Save</string>
     <string name="saving_data">Saving Data</string>
-    <string name="notes">Please note that we only save the type and the recommendation of your acne</string>
-    <string name="notes_goto_camera">To see for more details tap this to scan your face again. Thank you!</string>
+    <string name="notes">Please note that we don\'t save your photo</string>
+    <string name="notes_goto_camera">Tap this to scan your face again. Thank you!</string>
+    <string name="thanks">Thank you, for choosing this app!</string>
+    <string name="notes_that_the_photo_is_save_on_this_app">Notes that the photo is save on the gallery of this app</string>
 </resources>

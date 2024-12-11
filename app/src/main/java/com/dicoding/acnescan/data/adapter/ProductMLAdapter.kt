@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.acnescan.databinding.ItemProductBinding
 import com.bumptech.glide.Glide
@@ -26,11 +27,20 @@ class ProductMLAdapter(private val productList: List<Product>) :
                 .into(binding.productImage)
 
             binding.root.setOnClickListener {
-                // Intent untuk membuka URL produk di browser
-                Log.d("ProductMLAdapter", "Opening link for: ${product.name}, URL: ${product.productUrl}")
+                // Membuat AlertDialog
+                val builder = AlertDialog.Builder(itemView.context)
+                builder.setTitle("Product Details")
+                builder.setMessage("The product you want is in a third party application")
+                builder.setPositiveButton("Yes") { _, _ ->
+                    // Jika pengguna memilih "Ya", buka link produk
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(product.productUrl))
+                    itemView.context.startActivity(intent)
+                }
+                builder.setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
 
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(product.productUrl))
-                binding.root.context.startActivity(intent)
+                builder.show()
             }
         }
     }

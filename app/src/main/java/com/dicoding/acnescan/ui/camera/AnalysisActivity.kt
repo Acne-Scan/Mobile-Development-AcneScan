@@ -154,7 +154,7 @@ class AnalysisActivity : AppCompatActivity() {
                 } else {
                     // Menangani error response
                     Log.e("AnalysisActivity", "Error Response: Code: ${response.code()} - Message: ${response.message()}")
-                    Toast.makeText(this@AnalysisActivity, "Error: Server returned an error (status code: ${response.code()})", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AnalysisActivity, "Error: Server returned an error", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: SocketTimeoutException) {
                 // Menangani timeout error
@@ -163,15 +163,15 @@ class AnalysisActivity : AppCompatActivity() {
             } catch (e: IOException) {
                 // Menangani kesalahan jaringan lainnya (misalnya jaringan terputus)
                 Log.e("AnalysisActivity", "Network Error: ${e.message}", e)
-                Toast.makeText(this@AnalysisActivity, "Kesalahan jaringan: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AnalysisActivity, "Network error", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 if (e is HttpException && e.code() == 500) {
                     Log.e("AnalysisActivity", "Server Error: ${e.message}")
-                    Toast.makeText(this@AnalysisActivity, "Server Error: Terjadi kesalahan di server, coba lagi nanti.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AnalysisActivity, "Server Error: There is a problem with the server try again later.", Toast.LENGTH_SHORT).show()
                 } else {
                     // Penanganan kesalahan lain
                     Log.e("AnalysisActivity", "General Error: ${e.message}", e)
-                    Toast.makeText(this@AnalysisActivity, "Terjadi kesalahan: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AnalysisActivity, "Error", Toast.LENGTH_SHORT).show()
                 }
             }
         }

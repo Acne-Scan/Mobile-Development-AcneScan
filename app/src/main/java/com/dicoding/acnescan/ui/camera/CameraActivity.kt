@@ -216,7 +216,7 @@ class CameraActivity : AppCompatActivity() {
         // Gunakan ViewModel untuk menyimpan data
         galleryViewModel.insert(galleryEntity)
 
-        Toast.makeText(this, "Image saved to history", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Image saved to app gallery", Toast.LENGTH_SHORT).show()
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {

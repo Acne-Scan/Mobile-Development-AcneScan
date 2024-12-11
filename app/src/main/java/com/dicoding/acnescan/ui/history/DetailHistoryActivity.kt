@@ -25,8 +25,8 @@ class DetailHistoryActivity : AppCompatActivity() {
         val predictionType = intent.getStringExtra(EXTRA_PREDICTION_TYPE)
         val userPictureUri = intent.getStringExtra(EXTRA_IMAGE_URI)
         val recommendations = intent.getStringExtra(EXTRA_DESC_RECOMMENDATIONS)
-//        val productImages = intent.getSerializableExtra(EXTRA_PRODUCT_IMAGES) as? Map<String, String>
-//        val productLinks = intent.getSerializableExtra(EXTRA_PRODUCT_LINKS) as? Map<String, String>
+        val productImages = intent.getSerializableExtra(EXTRA_PRODUCT_IMAGES) as? Map<String, String>
+        val productLinks = intent.getSerializableExtra(EXTRA_PRODUCT_LINKS) as? Map<String, String>
 
         // Set the prediction type and recommendations to text views
         binding.predictionTitle.text = predictionType ?: "No prediction"
@@ -41,27 +41,27 @@ class DetailHistoryActivity : AppCompatActivity() {
 //        Glide.with(this)
 //            .load(userPictureUri)
 //            .into(binding.imageViewPlaceholder)
-//
-//        // Process products from the productImages map
-//        val products = productImages?.mapNotNull { (productName, imageUrl) ->
-//            val productUrl = productLinks?.get(productName)
-//            // Cek apakah productUrl ada, jika tidak kita abaikan produk ini
-//            if (productUrl != null) {
-//                // Create Product object
-//                Product(productName, imageUrl, productUrl)
-//            } else {
-//                null
-//            }
-//        }
-//
-//        // Check if there are no products and show a toast message if empty
-//        if (products.isNullOrEmpty()) {
-//            Log.e("DetailHistoryActivity", "No products available")
-//            Toast.makeText(this, "No products available", Toast.LENGTH_SHORT).show()
-//        } else {
-//            // Setup RecyclerView with products data
-//            setupRecyclerView(products)
-//        }
+
+        // Process products from the productImages map
+        val products = productImages?.mapNotNull { (productName, imageUrl) ->
+            val productUrl = productLinks?.get(productName)
+            // Cek apakah productUrl ada, jika tidak kita abaikan produk ini
+            if (productUrl != null) {
+                // Create Product object
+                Product(productName, imageUrl, productUrl)
+            } else {
+                null
+            }
+        }
+
+        // Check if there are no products and show a toast message if empty
+        if (products.isNullOrEmpty()) {
+            Log.e("DetailHistoryActivity", "No products available")
+            Toast.makeText(this, "No products available", Toast.LENGTH_SHORT).show()
+        } else {
+            // Setup RecyclerView with products data
+            setupRecyclerView(products)
+        }
 
         // Tombol untuk ke camera
         binding.notes.setOnClickListener {
@@ -76,17 +76,17 @@ class DetailHistoryActivity : AppCompatActivity() {
         }
     }
 
-//    private fun setupRecyclerView(products: List<Product>) {
-//        // Initialize the adapter and pass the list of products
-//        val adapter = ProductMLAdapter(products)
-//
-//        // Setup RecyclerView
-//        binding.recyclerViewProducts.layoutManager = LinearLayoutManager(this)
-//        binding.recyclerViewProducts.adapter = adapter
-//
-//        // Log for debugging
-//        Log.d("DetailHistoryActivity", "RecyclerView setup with ${products.size} products")
-//    }
+    private fun setupRecyclerView(products: List<Product>) {
+        // Initialize the adapter and pass the list of products
+        val adapter = ProductMLAdapter(products)
+
+        // Setup RecyclerView
+        binding.recyclerViewProducts.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewProducts.adapter = adapter
+
+        // Log for debugging
+        Log.d("DetailHistoryActivity", "RecyclerView setup with ${products.size} products")
+    }
 
     companion object {
         const val EXTRA_PREDICTION_TYPE = "extra_prediction_type"

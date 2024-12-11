@@ -129,7 +129,7 @@ class ResultActivity : AppCompatActivity() {
                     .into(binding.imageViewPlaceholder)
             } else {
                 Log.e("ResultActivity", "No image URL found in the map")
-                Toast.makeText(this, "No Image URL found in Map", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "No Image URL found", Toast.LENGTH_SHORT).show()
             }
         }
     }

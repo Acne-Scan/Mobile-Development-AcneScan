@@ -1,6 +1,7 @@
 package com.dicoding.acnescan.ui.history
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -32,6 +33,7 @@ class HistoryAnalyzeActivity : AppCompatActivity() {
 
         // Observasi data history
         historyAnalyzeViewModel.historyList.observe(this) { historyItems ->
+            binding.progressBar.visibility = View.GONE  // Sembunyikan ProgressBar setelah data selesai dimuat
             if (historyItems != null) {
                 if (historyItems.isEmpty()) {
                     binding.tvNoHistory.visibility = View.VISIBLE
@@ -46,6 +48,7 @@ class HistoryAnalyzeActivity : AppCompatActivity() {
 
         // Observasi error message jika ada
         historyAnalyzeViewModel.errorMessage.observe(this) { errorMessage ->
+            binding.progressBar.visibility = View.GONE  // Sembunyikan ProgressBar jika ada error
             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
         }
 
@@ -53,10 +56,11 @@ class HistoryAnalyzeActivity : AppCompatActivity() {
         val token = SharedPrefUtil.getToken(this)
         if (token != null) {
             // Jika token valid, panggil fetchHistory
+            binding.progressBar.visibility = View.VISIBLE  // Tampilkan ProgressBar sebelum memulai load
             historyAnalyzeViewModel.fetchHistory()
         } else {
             // Jika token tidak ditemukan
-            Toast.makeText(this, "Token tidak tersedia", Toast.LENGTH_SHORT).show()
+            Log.e("HistoryAnalyzeActivity", "Token tidak ditemukan")
         }
 
         // Tombol kembali untuk kembali ke activity sebelumnya
