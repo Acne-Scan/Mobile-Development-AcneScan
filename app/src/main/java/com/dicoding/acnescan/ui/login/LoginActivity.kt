@@ -79,10 +79,10 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 is LoginViewModel.LoginStatus.Error -> {
-                    Log.e("LoginActivity", "Network error: ${status.message}") // Log error jika ada
+                    Log.e("LoginActivity", "Error: ${status.message}") // Log error jika ada
                     Toast.makeText(
                         applicationContext,
-                        "Network error: Please check your internet connection",
+                        "Username or password is wrong",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
