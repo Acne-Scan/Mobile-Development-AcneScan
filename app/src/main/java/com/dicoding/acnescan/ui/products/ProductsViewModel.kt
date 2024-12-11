@@ -31,15 +31,18 @@ class ProductsViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    fun search(query: String) {
-        // Filter produk berdasarkan nama produk atau deskripsi
-        _filteredProducts.value = if (query.isBlank()) {
-            originalProducts // Jika query kosong, kembalikan daftar asli
+    fun search(query: String?) {
+        // Pastikan query tidak null dan produk memiliki nama dan deskripsi yang tidak null
+        _filteredProducts.value = if (query.isNullOrBlank()) {
+            originalProducts // Jika query kosong atau null, kembalikan daftar asli
         } else {
             originalProducts.filter { product ->
-                product.name.contains(query, ignoreCase = true) || // Filter berdasarkan nama produk
-                        product.description.contains(query, ignoreCase = true) // Filter berdasarkan deskripsi produk
+                val productDescription = product.description// Jika description null, set jadi string kosong
+
+                // Periksa apakah nama atau deskripsi produk mengandung query
+                productDescription.startsWith(query, ignoreCase = true)
             }
         }
     }
+
 }
