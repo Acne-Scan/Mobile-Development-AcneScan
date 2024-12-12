@@ -86,6 +86,9 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+                else -> {
+                    Log.e("LoginActivity", "Unknown login status: $status")
+                }
             }
         }
     }
